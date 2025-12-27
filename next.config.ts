@@ -1,6 +1,6 @@
 import type { NextConfig } from 'next'
 import createNextIntlPlugin from 'next-intl/plugin'
-import { withMiddlewares } from '@/lib/utils'
+import { withMiddlewares } from '@/lib/with-multi-proxy'
 
 // 如果需要，可以在开发环境可以对 fetch 使用代理
 const isDev = process.env.NODE_ENV === 'development'
@@ -17,7 +17,12 @@ const nextConfig: NextConfig = {
   reactStrictMode: false,
   crossOrigin: 'anonymous',
   images: {
-    remotePatterns: [{ hostname: 'image.tuntun.site' }],
+    remotePatterns: [
+      { hostname: 'image.tuntun.site' },
+      {
+        hostname: 'ik.imagekit.io',
+      },
+    ],
   },
   reactCompiler: true,
 }

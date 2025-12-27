@@ -1,1 +1,7 @@
-{}
+{
+  "login": {
+    "title": "Sign In",
+    "description": "Sign in with your Google account",
+    "googleSignIn": "Sign in with Google"
+  }
+}
