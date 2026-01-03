@@ -131,6 +131,9 @@ export function ChatPanel({ chatId }: ChatPanelProps) {
   const { messages, sendMessage, status } = useChat<ChatMessage>({
     transport: new DefaultChatTransport({
       api: '/api/chat',
+      body: {
+        chatId,
+      },
     }),
     id: chatId,
   })

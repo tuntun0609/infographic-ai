@@ -28,8 +28,8 @@ export default async function CreateLayout({
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
       <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-14 shrink-0 items-center justify-between px-4">
+      <SidebarInset className="flex h-screen flex-col">
+        <header className="sticky top-0 z-5 flex h-14 shrink-0 items-center justify-between bg-background/80 px-4 backdrop-blur-md">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
           </div>
@@ -64,7 +64,7 @@ export default async function CreateLayout({
             <UserButton className="ml-1" showName={false} />
           </div>
         </header>
-        <div className="flex flex-1 flex-col">{children}</div>
+        {children}
       </SidebarInset>
     </SidebarProvider>
   )

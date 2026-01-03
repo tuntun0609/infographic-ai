@@ -16,7 +16,7 @@ export function ChatPanels({ chatId, defaultLayout }: ChatPanelsProps) {
   }
 
   return (
-    <main className="flex h-full p-4 pt-0">
+    <main className="flex h-full overflow-hidden p-4 pt-0">
       <Group
         className="h-full w-full"
         defaultLayout={defaultLayout}
@@ -24,7 +24,7 @@ export function ChatPanels({ chatId, defaultLayout }: ChatPanelsProps) {
         orientation="horizontal"
       >
         <Panel
-          className="rounded-xl border bg-card shadow-xs"
+          className="overflow-hidden rounded-xl border bg-card shadow-xs"
           defaultSize="30"
           id="chat-side-panel"
           minSize="300px"
@@ -37,7 +37,7 @@ export function ChatPanels({ chatId, defaultLayout }: ChatPanelsProps) {
         </Separator>
 
         <Panel
-          className="rounded-xl border bg-card shadow-xs"
+          className="overflow-hidden rounded-xl border bg-card shadow-xs"
           defaultSize="70"
           id="slide-render-panel"
           minSize="30"
