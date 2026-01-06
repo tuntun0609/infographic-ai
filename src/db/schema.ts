@@ -7,6 +7,7 @@ import {
   text,
   timestamp,
 } from 'drizzle-orm/pg-core'
+import type { Infographic } from '@/lib/slide-schema'
 
 export const user = pgTable('user', {
   id: text('id').primaryKey(),
@@ -152,4 +153,33 @@ export const messageRelations = relations(message, ({ one }) => ({
 
 export const userChatRelations = relations(user, ({ many }) => ({
   chats: many(chat),
+}))
+
+export const slide = pgTable(
+  'slide',
+  {
+    id: text('id').primaryKey(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    title: text('title').notNull(),
+    infographics: jsonb('infographics').$type<Infographic[]>().notNull(), // 存储所有信息图数据的 JSON 数组
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+  },
+  (table) => [index('slide_userId_idx').on(table.userId)]
+)
+
+export const slideRelations = relations(slide, ({ one }) => ({
+  user: one(user, {
+    fields: [slide.userId],
+    references: [user.id],
+  }),
+}))
+
+export const userSlideRelations = relations(user, ({ many }) => ({
+  slides: many(slide),
 }))
