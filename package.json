@@ -33,6 +33,7 @@
     "eventemitter3": "^5.0.1",
     "fast-json-patch": "^3.1.1",
     "fumadocs-core": "^16.4.4",
+    "jotai": "^2.16.1",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.562.0",
     "motion": "^12.24.7",
