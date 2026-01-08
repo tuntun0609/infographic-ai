@@ -35,8 +35,6 @@ export const selectedInfographicAtom = atom((get) => {
     return null
   }
 
-  console.log(slide, selectedId)
-
   return slide.infographics.find((info) => info.id === selectedId) || null
 })
 

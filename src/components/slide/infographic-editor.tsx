@@ -1,9 +1,14 @@
 'use client'
 
-import { useAtom } from 'jotai'
-import { Textarea } from '@/components/ui/textarea'
+import { yaml } from '@codemirror/lang-yaml'
+import { githubDark, githubLight } from '@uiw/codemirror-theme-github'
+import CodeMirror from '@uiw/react-codemirror'
+import { useAtom, useAtomValue } from 'jotai'
+import { useTheme } from 'next-themes'
+import { useCallback, useEffect, useState } from 'react'
 import {
   editingInfographicContentAtom,
+  selectedInfographicAtom,
   selectedInfographicIdAtom,
   updateInfographicContentAtom,
 } from '@/store/slide-store'
@@ -12,33 +17,81 @@ interface InfographicEditorProps {
   slideId: string
 }
 
-export function InfographicEditor({ slideId }: InfographicEditorProps) {
+export function InfographicEditor({
+  slideId: _slideId,
+}: InfographicEditorProps) {
   const [content, setContent] = useAtom(editingInfographicContentAtom)
   const [selectedId] = useAtom(selectedInfographicIdAtom)
+  const selectedInfographic = useAtomValue(selectedInfographicAtom)
   const [, updateInfographicContent] = useAtom(updateInfographicContentAtom)
+  const { resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
 
-  const handleContentChange = (value: string) => {
-    setContent(value)
-    if (selectedId) {
-      updateInfographicContent({ infographicId: selectedId, content: value })
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // 当选中信息图改变时，同步编辑器内容
+  useEffect(() => {
+    if (selectedInfographic) {
+      setContent(selectedInfographic.content)
+    } else {
+      setContent('')
     }
+  }, [selectedInfographic, setContent])
+
+  const handleContentChange = useCallback(
+    (value: string) => {
+      setContent(value)
+      if (selectedId) {
+        updateInfographicContent({ infographicId: selectedId, content: value })
+      }
+    },
+    [selectedId, setContent, updateInfographicContent]
+  )
+
+  if (!mounted) {
+    return null
   }
 
   return (
-    <div className="flex h-full flex-col gap-4 p-4">
-      <div className="space-y-2">
-        <h3 className="font-medium text-sm">AntV Infographic 语法</h3>
-        <Textarea
-          className="min-h-[400px] resize-none font-mono text-xs"
-          onChange={(e) => handleContentChange(e.target.value)}
-          placeholder="在这里输入信息图语法..."
-          value={content}
-        />
-      </div>
-      <div className="flex-1" />
-      <div className="text-[10px] text-muted-foreground italic">
-        编辑器支持 AntV Infographic 语法 {slideId}
-      </div>
+    <div className="h-full w-full overflow-hidden">
+      <CodeMirror
+        basicSetup={{
+          lineNumbers: true,
+          highlightActiveLineGutter: true,
+          highlightSpecialChars: true,
+          history: true,
+          foldGutter: true,
+          drawSelection: true,
+          dropCursor: true,
+          allowMultipleSelections: true,
+          indentOnInput: true,
+          syntaxHighlighting: true,
+          bracketMatching: true,
+          closeBrackets: true,
+          autocompletion: true,
+          rectangularSelection: true,
+          crosshairCursor: false,
+          highlightActiveLine: true,
+          highlightSelectionMatches: true,
+          closeBracketsKeymap: true,
+          defaultKeymap: true,
+          searchKeymap: true,
+          historyKeymap: true,
+          foldKeymap: true,
+          completionKeymap: true,
+          lintKeymap: true,
+          tabSize: 2,
+        }}
+        className="h-full text-base"
+        extensions={[yaml()]}
+        height="100%"
+        onChange={handleContentChange}
+        placeholder="在这里输入信息图语法..."
+        theme={resolvedTheme === 'dark' ? githubDark : githubLight}
+        value={content}
+      />
     </div>
   )
 }

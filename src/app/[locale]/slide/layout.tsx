@@ -1,8 +1,8 @@
-import { Coins, Gift } from 'lucide-react'
+import { Coins } from 'lucide-react'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { SlideSidebar } from '@/components/slide/app-sidebar'
-import { Button } from '@/components/ui/button'
+import { ThemeToggle } from '@/components/theme-toggle'
 import {
   SidebarInset,
   SidebarProvider,
@@ -34,7 +34,7 @@ export default async function SlideLayout({
             <SidebarTrigger className="-ml-1" />
           </div>
           <div className="flex items-center gap-1 sm:gap-4">
-            <Button
+            {/* <Button
               className="hidden font-medium text-muted-foreground md:flex"
               size="sm"
               variant="ghost"
@@ -54,7 +54,9 @@ export default async function SlideLayout({
               variant="ghost"
             >
               <Gift className="h-4 w-4" /> Refer
-            </Button>
+            </Button> */}
+
+            <ThemeToggle />
             <div className="flex items-center gap-2 rounded-full border bg-background px-2.5 py-1 shadow-sm">
               <div className="flex h-5 w-5 items-center justify-center rounded-full bg-primary/10">
                 <Coins className="h-3.5 w-3.5 text-primary" />

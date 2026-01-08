@@ -119,7 +119,7 @@ export function SlidePanels({
                   <PanelRightClose className="h-4 w-4" />
                 </Button>
               </div>
-              <div className="flex-1 overflow-auto">
+              <div className="min-h-0 flex-1">
                 <InfographicEditor slideId={slideId} />
               </div>
             </div>
