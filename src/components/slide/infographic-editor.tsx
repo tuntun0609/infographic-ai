@@ -55,43 +55,47 @@ export function InfographicEditor({
   }
 
   return (
-    <div className="h-full w-full overflow-hidden">
-      <CodeMirror
-        basicSetup={{
-          lineNumbers: true,
-          highlightActiveLineGutter: true,
-          highlightSpecialChars: true,
-          history: true,
-          foldGutter: true,
-          drawSelection: true,
-          dropCursor: true,
-          allowMultipleSelections: true,
-          indentOnInput: true,
-          syntaxHighlighting: true,
-          bracketMatching: true,
-          closeBrackets: true,
-          autocompletion: true,
-          rectangularSelection: true,
-          crosshairCursor: false,
-          highlightActiveLine: true,
-          highlightSelectionMatches: true,
-          closeBracketsKeymap: true,
-          defaultKeymap: true,
-          searchKeymap: true,
-          historyKeymap: true,
-          foldKeymap: true,
-          completionKeymap: true,
-          lintKeymap: true,
-          tabSize: 2,
-        }}
-        className="h-full text-base"
-        extensions={[yaml()]}
-        height="100%"
-        onChange={handleContentChange}
-        placeholder="在这里输入信息图语法..."
-        theme={resolvedTheme === 'dark' ? githubDark : githubLight}
-        value={content}
-      />
+    <div className="flex h-full w-full flex-col overflow-hidden">
+      <div className="flex-1 overflow-hidden p-4">
+        <div className="h-full w-full overflow-hidden rounded-md border bg-background">
+          <CodeMirror
+            basicSetup={{
+              lineNumbers: true,
+              highlightActiveLineGutter: true,
+              highlightSpecialChars: true,
+              history: true,
+              foldGutter: true,
+              drawSelection: true,
+              dropCursor: true,
+              allowMultipleSelections: true,
+              indentOnInput: true,
+              syntaxHighlighting: true,
+              bracketMatching: true,
+              closeBrackets: true,
+              autocompletion: true,
+              rectangularSelection: true,
+              crosshairCursor: false,
+              highlightActiveLine: true,
+              highlightSelectionMatches: true,
+              closeBracketsKeymap: true,
+              defaultKeymap: true,
+              searchKeymap: true,
+              historyKeymap: true,
+              foldKeymap: true,
+              completionKeymap: true,
+              lintKeymap: true,
+              tabSize: 2,
+            }}
+            className="h-full text-sm"
+            extensions={[yaml()]}
+            height="100%"
+            onChange={handleContentChange}
+            placeholder="在这里输入信息图语法..."
+            theme={resolvedTheme === 'dark' ? githubDark : githubLight}
+            value={content}
+          />
+        </div>
+      </div>
     </div>
   )
 }
