@@ -3,6 +3,7 @@
 import { useSetAtom } from 'jotai'
 import Cookies from 'js-cookie'
 import { PanelRightClose, PanelRightOpen } from 'lucide-react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import type { Layout, PanelImperativeHandle } from 'react-resizable-panels'
 import { Group, Panel, Separator } from 'react-resizable-panels'
@@ -34,6 +35,10 @@ export function SlidePanels({
   const setSlide = useSetAtom(slideAtom)
   const setSelectedInfographicId = useSetAtom(selectedInfographicIdAtom)
   const setEditingContent = useSetAtom(editingInfographicContentAtom)
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const currentTab = searchParams.get('tab') || 'editor'
 
   // 初始化 slide 数据
   useEffect(() => {
@@ -61,6 +66,20 @@ export function SlidePanels({
         panel.collapse()
       }
     }
+  }
+
+  const handleTabChange = (value: string) => {
+    const params = new URLSearchParams(searchParams.toString())
+    if (value === 'editor') {
+      // 如果切换到默认值，移除 searchParams
+      params.delete('tab')
+    } else {
+      params.set('tab', value)
+    }
+    const newUrl = params.toString()
+      ? `${pathname}?${params.toString()}`
+      : pathname
+    router.push(newUrl)
   }
 
   return (
@@ -110,7 +129,11 @@ export function SlidePanels({
         >
           {!isCollapsed && (
             <div className="flex h-full flex-col">
-              <Tabs className="flex h-full flex-col" defaultValue="editor">
+              <Tabs
+                className="flex h-full flex-col"
+                onValueChange={handleTabChange}
+                value={currentTab}
+              >
                 <div className="flex items-center justify-between border-b p-2 px-4">
                   <TabsList className="h-auto bg-transparent p-0">
                     <TabsTrigger
