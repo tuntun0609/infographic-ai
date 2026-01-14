@@ -3,9 +3,8 @@
 import { Infographic } from '@antv/infographic'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ChevronLeft, ChevronRight, Download, Maximize2 } from 'lucide-react'
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
 import {
   selectedInfographicAtom,
   selectedInfographicIdAtom,
@@ -23,6 +22,8 @@ export function InfographicViewer({ slideId }: InfographicViewerProps) {
   const setSelectedInfographicId = useSetAtom(selectedInfographicIdAtom)
   const containerRef = useRef<HTMLDivElement>(null)
   const infographicInstanceRef = useRef<Infographic | null>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const [isFullscreen, setIsFullscreen] = useState(false)
 
   // 计算当前索引和总数
   const { currentIndex, totalCount } = useMemo(() => {
@@ -168,81 +169,113 @@ export function InfographicViewer({ slideId }: InfographicViewerProps) {
   }
 
   const handleFullscreen = () => {
-    if (!containerRef.current) {
+    if (!wrapperRef.current) {
       return
     }
 
     if (document.fullscreenElement) {
       document.exitFullscreen()
     } else {
-      containerRef.current.requestFullscreen()
+      wrapperRef.current.requestFullscreen()
     }
   }
 
+  // 监听全屏状态变化
+  const handleFullscreenChange = useCallback(() => {
+    setIsFullscreen(!!document.fullscreenElement)
+  }, [])
+
+  useEffect(() => {
+    document.addEventListener('fullscreenchange', handleFullscreenChange)
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange)
+    }
+  }, [handleFullscreenChange])
+
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-4 p-8">
-      <div className="flex aspect-video w-full items-center justify-center overflow-hidden rounded-lg border-2 border-dashed">
-        {selectedInfographic ? (
-          <div className="relative flex h-full w-full items-center justify-center">
-            <div className="h-full w-full bg-background" ref={containerRef} />
-          </div>
-        ) : (
-          <div className="text-center">
-            <p className="font-medium text-muted-foreground">信息图展示区域</p>
-            <p className="mt-1 text-muted-foreground text-xs">
-              Slide ID: {slideId}
-            </p>
-            <p className="mt-2 text-muted-foreground text-xs">
-              请选择一个信息图进行编辑
-            </p>
-          </div>
-        )}
-      </div>
-      {/* 工具栏 */}
-      {selectedInfographic && (
-        <div className="flex items-center gap-2 rounded-lg border bg-background p-2 shadow-sm">
-          {/* 切换器 */}
-          {totalCount > 1 && (
-            <>
-              <Button
-                onClick={handlePrevious}
-                size="icon-sm"
-                title="上一个"
-                variant="ghost"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <div className="px-3 py-1 text-muted-foreground text-sm">
-                {currentIndex} / {totalCount}
-              </div>
-              <Button
-                onClick={handleNext}
-                size="icon-sm"
-                title="下一个"
-                variant="ghost"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-              <Separator className="h-6" orientation="vertical" />
-            </>
+    <div
+      className={`relative flex h-full w-full flex-col overflow-hidden ${
+        isFullscreen ? 'bg-background' : ''
+      }`}
+      ref={wrapperRef}
+    >
+      <div
+        className={`flex min-h-0 flex-1 items-center justify-center overflow-hidden ${
+          isFullscreen ? 'p-4' : 'p-8'
+        }`}
+      >
+        <div
+          className={
+            'flex h-full w-full max-w-full items-center justify-center overflow-hidden'
+          }
+        >
+          {selectedInfographic ? (
+            <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
+              <div className="h-full w-full bg-background" ref={containerRef} />
+            </div>
+          ) : (
+            <div className="text-center">
+              <p className="font-medium text-muted-foreground">
+                信息图展示区域
+              </p>
+              <p className="mt-1 text-muted-foreground text-xs">
+                Slide ID: {slideId}
+              </p>
+              <p className="mt-2 text-muted-foreground text-xs">
+                请选择一个信息图进行编辑
+              </p>
+            </div>
           )}
-          {/* 工具按钮 */}
-          <Button
-            onClick={handleDownload}
-            size="icon-sm"
-            title="下载"
-            variant="ghost"
-          >
-            <Download className="h-4 w-4" />
-          </Button>
-          <Button
-            onClick={handleFullscreen}
-            size="icon-sm"
-            title="全屏"
-            variant="ghost"
-          >
-            <Maximize2 className="h-4 w-4" />
-          </Button>
+        </div>
+      </div>
+      {/* 工具栏 - 固定在底部，全屏时也显示，不会被压缩 */}
+      {selectedInfographic && (
+        <div className="flex shrink-0 items-center justify-center gap-2 border-t bg-background p-2 shadow-sm">
+          <div className="flex items-center gap-2 rounded-lg bg-background p-2">
+            {/* 切换器 */}
+            {totalCount > 1 && (
+              <>
+                <Button
+                  onClick={handlePrevious}
+                  size="icon-sm"
+                  title="上一个"
+                  variant="ghost"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <div className="px-3 py-1 text-muted-foreground text-sm">
+                  {currentIndex} / {totalCount}
+                </div>
+                <Button
+                  onClick={handleNext}
+                  size="icon-sm"
+                  title="下一个"
+                  variant="ghost"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </>
+            )}
+            {/* 分割线 */}
+            <div className="h-6 w-px bg-border" />
+            {/* 工具按钮 */}
+            <Button
+              onClick={handleDownload}
+              size="icon-sm"
+              title="下载"
+              variant="ghost"
+            >
+              <Download className="h-4 w-4" />
+            </Button>
+            <Button
+              onClick={handleFullscreen}
+              size="icon-sm"
+              title={isFullscreen ? '退出全屏' : '全屏'}
+              variant="ghost"
+            >
+              <Maximize2 className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       )}
     </div>

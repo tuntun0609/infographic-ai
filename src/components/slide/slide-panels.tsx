@@ -82,6 +82,15 @@ export function SlidePanels({
     router.push(newUrl)
   }
 
+  const handleSeparatorClick = () => {
+    if (isCollapsed) {
+      const panel = panelRef.current
+      if (panel) {
+        panel.expand()
+      }
+    }
+  }
+
   return (
     <main className="flex h-full overflow-hidden p-4 pt-0">
       <Group
@@ -110,7 +119,10 @@ export function SlidePanels({
           </div>
         </Panel>
 
-        <Separator className="relative w-2 rounded-full bg-transparent transition-all hover:bg-primary/5 focus-visible:outline-none data-[dragging=true]:bg-primary/10">
+        <Separator
+          className="relative w-2 cursor-pointer rounded-full bg-transparent transition-all hover:bg-primary/5 focus-visible:outline-none data-[dragging=true]:bg-primary/10"
+          onClick={handleSeparatorClick}
+        >
           <div className="mx-auto h-full w-px" />
         </Separator>
 
