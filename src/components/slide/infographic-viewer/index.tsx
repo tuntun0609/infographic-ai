@@ -81,6 +81,24 @@ export function InfographicViewer({ slideId }: InfographicViewerProps) {
     }
   }, [slide, selectedInfographicId, setSelectedInfographicId])
 
+  // 跳转到指定页码
+  const handleJumpTo = useCallback(
+    (pageNum: number) => {
+      if (!slide || slide.infographics.length === 0) {
+        return
+      }
+      // pageNum 是从 1 开始的，需要转换为索引
+      const targetIndex = pageNum - 1
+      if (targetIndex >= 0 && targetIndex < slide.infographics.length) {
+        const targetInfographic = slide.infographics[targetIndex]
+        if (targetInfographic) {
+          setSelectedInfographicId(targetInfographic.id)
+        }
+      }
+    },
+    [slide, setSelectedInfographicId]
+  )
+
   // 新增 slide
   const handleAddSlide = useCallback(() => {
     const newInfographic = {
@@ -198,6 +216,7 @@ export function InfographicViewer({ slideId }: InfographicViewerProps) {
         onDeleteSlide={handleDeleteSlide}
         onDownload={handleDownload}
         onFullscreen={handleFullscreen}
+        onJumpTo={handleJumpTo}
         onNext={handleNext}
         onPrevious={handlePrevious}
         totalCount={totalCount}
