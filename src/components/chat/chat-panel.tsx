@@ -63,12 +63,7 @@ function renderToolPart(
     return null
   }
 
-  let toolName = part.type.replace('tool-', '')
-  if (part.type === 'tool-getWeather') {
-    toolName = '获取天气'
-  } else if (part.type === 'tool-calculate') {
-    toolName = '计算'
-  }
+  const toolName = part.type.replace('tool-', '')
 
   return (
     <Tool
@@ -122,10 +117,6 @@ function renderMessagePart(
           {part.text}
         </MessageResponse>
       )
-
-    case 'tool-getWeather':
-    case 'tool-calculate':
-      return renderToolPart(part, messageId, index)
 
     default:
       return renderToolPart(part, messageId, index)
