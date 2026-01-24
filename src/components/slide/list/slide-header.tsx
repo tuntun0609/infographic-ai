@@ -47,7 +47,7 @@ export function SlideHeader({
   )
 
   return (
-    <header className="sticky top-0 z-10 flex items-center justify-between bg-background/80 px-8 py-6 backdrop-blur-xl">
+    <header className="sticky top-0 z-5 flex items-center justify-between bg-background/80 px-8 py-6 backdrop-blur-xl">
       <div className="flex items-center gap-4">
         <h1 className="font-medium text-xl tracking-tight">我的演示</h1>
         <span className="rounded-full bg-muted px-2.5 py-0.5 font-medium text-muted-foreground text-xs">
