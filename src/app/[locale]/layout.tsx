@@ -1,3 +1,4 @@
+import { Agentation } from 'agentation'
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { notFound } from 'next/navigation'
@@ -46,6 +47,7 @@ export default async function RootLayout({
           enableSystem
         >
           <NextIntlClientProvider>{children}</NextIntlClientProvider>
+          <Agentation />
         </ThemeProvider>
       </body>
     </html>

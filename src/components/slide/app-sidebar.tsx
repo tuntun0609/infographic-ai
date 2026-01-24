@@ -55,7 +55,7 @@ export function SlideSidebar({
               <SidebarMenuItem>
                 <SidebarMenuButton className="py-2.5">
                   <FolderRoot className="size-4 text-muted-foreground" />
-                  <span className="font-medium text-sm">Slides</span>
+                  <span className="font-medium text-sm">My Slides</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
