@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { SlideSidebar } from '@/components/slide/app-sidebar'
+import { SlideSidebar } from '@/components/slide/sidebar/app-sidebar'
 import { ThemeToggle } from '@/components/theme-toggle'
 import {
   SidebarInset,

@@ -1,6 +1,6 @@
 import { and, desc, eq, ilike } from 'drizzle-orm'
 import { redirect } from 'next/navigation'
-import { SlideList } from '@/components/slide/slide-list'
+import { SlideList } from '@/components/slide/list/slide-list'
 import { db } from '@/db'
 import { slide } from '@/db/schema'
 import { getSession } from '@/lib/auth'

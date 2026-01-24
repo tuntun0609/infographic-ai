@@ -1,0 +1,152 @@
+'use client'
+
+import { MoreHorizontal, Trash2, Type } from 'lucide-react'
+import { useState, useTransition } from 'react'
+import { toast } from 'sonner'
+import { deleteSlide, updateSlide } from '@/actions/slide'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { Input } from '@/components/ui/input'
+import type { slide } from '@/db/schema'
+
+type Slide = typeof slide.$inferSelect
+
+interface SlideCardMenuProps {
+  slide: Slide
+}
+
+export function SlideCardMenu({ slide }: SlideCardMenuProps) {
+  const [isRenameOpen, setIsRenameOpen] = useState(false)
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false)
+  const [newName, setNewName] = useState(slide.title)
+  const [isPending, startTransition] = useTransition()
+
+  const handleRename = () => {
+    if (!newName.trim() || newName === slide.title) {
+      setIsRenameOpen(false)
+      return
+    }
+
+    startTransition(async () => {
+      try {
+        await updateSlide(slide.id, { title: newName })
+        setIsRenameOpen(false)
+        toast.success('重命名成功')
+      } catch {
+        toast.error('重命名失败')
+      }
+    })
+  }
+
+  const handleDelete = () => {
+    startTransition(async () => {
+      try {
+        await deleteSlide(slide.id)
+        setIsDeleteOpen(false)
+        toast.success('删除成功')
+      } catch {
+        toast.error('删除失败')
+      }
+    })
+  }
+
+  return (
+    <>
+      <div className="absolute top-3 right-3 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+        <DropdownMenu>
+          <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-full bg-background/80 backdrop-blur-sm transition-colors hover:bg-background">
+            <MoreHorizontal className="size-4" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-40">
+            <DropdownMenuItem onClick={() => setIsRenameOpen(true)}>
+              <Type className="mr-2 size-4" />
+              重命名
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="text-destructive focus:text-destructive"
+              onClick={() => setIsDeleteOpen(true)}
+            >
+              <Trash2 className="mr-2 size-4" />
+              删除
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      <Dialog onOpenChange={setIsRenameOpen} open={isRenameOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>重命名演示文稿</DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <Input
+              autoFocus
+              className="col-span-3"
+              onChange={(e) => setNewName(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleRename()
+                }
+              }}
+              placeholder="输入新的名称"
+              value={newName}
+            />
+          </div>
+          <DialogFooter>
+            <Button onClick={() => setIsRenameOpen(false)} variant="outline">
+              取消
+            </Button>
+            <Button disabled={isPending} onClick={handleRename}>
+              保存
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <AlertDialog onOpenChange={setIsDeleteOpen} open={isDeleteOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>确认删除？</AlertDialogTitle>
+            <AlertDialogDescription>
+              此操作无法撤销。这将永久删除 "{slide.title}" 及其所有内容。
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>取消</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              disabled={isPending}
+              onClick={handleDelete}
+            >
+              删除
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
+  )
+}

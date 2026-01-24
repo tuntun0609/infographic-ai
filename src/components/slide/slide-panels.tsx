@@ -17,8 +17,8 @@ import {
   slideAtom,
 } from '@/store/slide-store'
 import { RESIZABLE_PANELS_COOKIE_NAME } from '@/type'
-import { AIGenerator } from './ai-generator'
-import { InfographicEditor } from './infographic-editor'
+import { AIGenerator } from './editor/ai-generator'
+import { InfographicEditor } from './editor/infographic-editor'
 import { InfographicViewer } from './infographic-viewer'
 
 export function SlidePanels({
