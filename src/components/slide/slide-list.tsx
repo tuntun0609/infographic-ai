@@ -1,10 +1,18 @@
 'use client'
 
-import { ChevronLeft, ChevronRight, FileText, Plus, Search } from 'lucide-react'
+import {
+  ChevronLeft,
+  ChevronRight,
+  FileText,
+  Loader2,
+  Plus,
+  Search,
+} from 'lucide-react'
 import type { Variants } from 'motion/react'
 import { motion } from 'motion/react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useTransition } from 'react'
+import { createSlide } from '@/app/[locale]/slide/actions'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -38,6 +46,13 @@ export function SlideList({
   const [searchQuery, setSearchQuery] = useState(
     searchParams.get('search') || ''
   )
+  const [isPending, startTransition] = useTransition()
+
+  const handleCreateSlide = () => {
+    startTransition(async () => {
+      await createSlide()
+    })
+  }
 
   // 同步 URL 参数到本地状态
   useEffect(() => {
@@ -120,12 +135,18 @@ export function SlideList({
             />
           </div>
           {/* 新建按钮 */}
-          <Link href="/slide">
-            <Button className="gap-2">
+          <Button
+            className="gap-2"
+            disabled={isPending}
+            onClick={handleCreateSlide}
+          >
+            {isPending ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
               <Plus className="size-4" />
-              新建 Slide
-            </Button>
-          </Link>
+            )}
+            新建 Slide
+          </Button>
         </div>
       </div>
 
