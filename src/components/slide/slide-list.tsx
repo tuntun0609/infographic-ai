@@ -12,7 +12,7 @@ import type { Variants } from 'motion/react'
 import { motion } from 'motion/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useState, useTransition } from 'react'
-import { createSlide } from '@/app/[locale]/slide/actions'
+import { createSlide } from '@/actions/slide'
 import { Button } from '@/components/ui/button'
 import {
   Card,

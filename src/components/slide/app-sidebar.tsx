@@ -1,7 +1,7 @@
-import { Clock, FileText, FolderRoot, Search } from 'lucide-react'
+import { FileText, FolderRoot } from 'lucide-react'
+import Link from 'next/link'
 import type * as React from 'react'
 import { LogoIcon } from '@/components/logo'
-import { buttonVariants } from '@/components/ui/button'
 import {
   Sidebar,
   SidebarContent,
@@ -13,8 +13,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from '@/components/ui/sidebar'
-import { Link } from '@/i18n/navigation'
-import { cn } from '@/lib/utils'
+import { NewSlideButton } from './new-slide-button'
 
 export function SlideSidebar({
   ...props
@@ -30,15 +29,7 @@ export function SlideSidebar({
         </div>
 
         <div className="mt-4 px-2">
-          <Link
-            className={cn(
-              buttonVariants({ variant: 'outline' }),
-              'h-10 w-full justify-center gap-2 rounded-xl border bg-background font-medium text-foreground shadow-sm hover:bg-muted'
-            )}
-            href="/slide"
-          >
-            New Slide
-          </Link>
+          <NewSlideButton />
         </div>
       </SidebarHeader>
 
@@ -46,28 +37,30 @@ export function SlideSidebar({
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              <SidebarMenuItem>
+              {/* <SidebarMenuItem>
                 <SidebarMenuButton className="py-2.5">
                   <Search className="size-4 text-muted-foreground" />
                   <span className="font-medium text-sm">Search</span>
                 </SidebarMenuButton>
-              </SidebarMenuItem>
+              </SidebarMenuItem> */}
               <SidebarMenuItem>
-                <SidebarMenuButton className="py-2.5">
-                  <FolderRoot className="size-4 text-muted-foreground" />
-                  <span className="font-medium text-sm">My Slides</span>
-                </SidebarMenuButton>
+                <Link href="/slide">
+                  <SidebarMenuButton className="py-2.5">
+                    <FolderRoot className="size-4 text-muted-foreground" />
+                    <span className="font-medium text-sm">My Slides</span>
+                  </SidebarMenuButton>
+                </Link>
               </SidebarMenuItem>
-              <SidebarMenuItem>
+              {/* <SidebarMenuItem>
                 <SidebarMenuButton className="py-2.5">
                   <Clock className="size-4 text-muted-foreground" />
                   <span className="font-medium text-sm">Recent Slides</span>
                 </SidebarMenuButton>
-              </SidebarMenuItem>
+              </SidebarMenuItem> */}
               <SidebarMenuItem>
                 <SidebarMenuButton className="py-2.5">
                   <FileText className="size-4 text-muted-foreground" />
-                  <span className="font-medium text-sm">Find More</span>
+                  <span className="font-medium text-sm">Explore More</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
