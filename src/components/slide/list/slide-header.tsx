@@ -49,7 +49,7 @@ export function SlideHeader({
   return (
     <header className="sticky top-0 z-5 flex items-center justify-between bg-background/80 px-8 py-6 backdrop-blur-xl">
       <div className="flex items-center gap-4">
-        <h1 className="font-medium text-xl tracking-tight">我的演示</h1>
+        <h1 className="font-medium text-xl tracking-tight">My Slides</h1>
         <span className="rounded-full bg-muted px-2.5 py-0.5 font-medium text-muted-foreground text-xs">
           {totalCount}
         </span>
@@ -61,7 +61,7 @@ export function SlideHeader({
           <Input
             className="h-9 w-64 rounded-full bg-muted/50 pl-9 transition-all hover:bg-muted focus:w-80 focus:bg-background"
             onChange={(e) => handleSearchChange(e.target.value)}
-            placeholder="搜索..."
+            placeholder="Search..."
             value={searchQuery}
           />
         </div>
@@ -71,7 +71,7 @@ export function SlideHeader({
           onClick={onCreateSlide}
         >
           <Plus className="mr-2 size-4" />
-          新建
+          New Slide
         </Button>
       </div>
     </header>
