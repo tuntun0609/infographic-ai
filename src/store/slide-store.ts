@@ -1,6 +1,5 @@
 import { atom } from 'jotai'
 import type { Infographic } from '@/lib/slide-schema'
-import { slideData } from '@/mock/slide-data'
 
 // Slide 完整数据
 export interface SlideData {
@@ -12,13 +11,7 @@ export interface SlideData {
 }
 
 // 当前 slide 数据
-export const slideAtom = atom<SlideData | null>({
-  id: '1',
-  title: 'Test Slide',
-  infographics: slideData,
-  createdAt: new Date(),
-  updatedAt: new Date(),
-})
+export const slideAtom = atom<SlideData | null>()
 
 // 当前选中的 infographic ID
 export const selectedInfographicIdAtom = atom<string | null>('1')
