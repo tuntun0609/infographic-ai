@@ -2,6 +2,7 @@
 
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { PanelRightOpen } from 'lucide-react'
+import { motion } from 'motion/react'
 import { nanoid } from 'nanoid'
 import {
   useCallback,
@@ -268,14 +269,39 @@ export function InfographicViewer({
             )}
           </div>
           <div className="flex shrink-0 items-center gap-2">
-            <Button
-              disabled={isPending || !slide}
-              onClick={handleSave}
-              size="sm"
-              variant="default"
+            <motion.div
+              animate={
+                isPending
+                  ? {
+                      scale: [1, 1.02, 1],
+                    }
+                  : {}
+              }
+              transition={
+                isPending
+                  ? {
+                      duration: 1.5,
+                      repeat: Number.POSITIVE_INFINITY,
+                      ease: 'easeInOut',
+                    }
+                  : {
+                      type: 'spring',
+                      stiffness: 400,
+                      damping: 17,
+                    }
+              }
+              whileHover={isPending ? {} : { scale: 1.05 }}
+              whileTap={isPending ? {} : { scale: 0.95 }}
             >
-              {isPending ? '保存中...' : 'Save'}
-            </Button>
+              <Button
+                disabled={isPending || !slide}
+                onClick={handleSave}
+                size="sm"
+                variant="default"
+              >
+                {isPending ? '保存中...' : 'Save'}
+              </Button>
+            </motion.div>
             {isRightPanelCollapsed && onToggleRightPanel && (
               <Button
                 className="h-8 w-8"
