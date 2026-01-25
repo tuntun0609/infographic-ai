@@ -102,7 +102,7 @@ export function SlidePanels({
         <Panel
           className="flex flex-col overflow-hidden rounded-xl border bg-card shadow-xs"
           defaultSize={70}
-          minSize={30}
+          minSize="400px"
         >
           <div className="relative min-h-0 flex-1">
             <InfographicViewer

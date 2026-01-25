@@ -242,7 +242,7 @@ export function InfographicViewer({
           {isEditingTitle ? (
             <Input
               autoFocus
-              className="h-8 max-w-[300px]"
+              className="h-8 max-w-[300px] border-transparent px-2.5 py-1 font-semibold text-sm shadow-none"
               onBlur={handleTitleSubmit}
               onChange={(e) => setTitleValue(e.target.value)}
               onKeyDown={(e) => {
@@ -258,7 +258,7 @@ export function InfographicViewer({
             />
           ) : (
             <button
-              className="cursor-pointer truncate font-semibold text-sm hover:text-primary"
+              className="h-8 cursor-pointer truncate px-2.5 py-1 text-left font-semibold text-sm hover:text-primary"
               onClick={() => setIsEditingTitle(true)}
               type="button"
             >
