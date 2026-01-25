@@ -237,56 +237,58 @@ export function InfographicViewer({
       ref={wrapperRef}
     >
       {/* Header */}
-      <div className="flex h-14 shrink-0 items-center justify-between border-b bg-background px-4 py-2">
-        <div className="flex min-w-0 flex-1 items-center gap-2">
-          {isEditingTitle ? (
-            <Input
-              autoFocus
-              className="h-8 max-w-[300px] border-transparent px-2.5 py-1 font-semibold text-sm shadow-none"
-              onBlur={handleTitleSubmit}
-              onChange={(e) => setTitleValue(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  handleTitleSubmit()
-                }
-                if (e.key === 'Escape') {
-                  setIsEditingTitle(false)
-                  setTitleValue(slide?.title || '')
-                }
-              }}
-              value={titleValue}
-            />
-          ) : (
-            <button
-              className="h-8 cursor-pointer truncate px-2.5 py-1 text-left font-semibold text-sm hover:text-primary"
-              onClick={() => setIsEditingTitle(true)}
-              type="button"
-            >
-              {slide?.title || 'Untitled Slide'}
-            </button>
-          )}
-        </div>
-        <div className="flex shrink-0 items-center gap-2">
-          <Button
-            disabled={isPending || !slide}
-            onClick={handleSave}
-            size="sm"
-            variant="default"
-          >
-            {isPending ? '保存中...' : 'Save'}
-          </Button>
-          {isRightPanelCollapsed && onToggleRightPanel && (
+      {!isFullscreen && (
+        <div className="flex h-14 shrink-0 items-center justify-between border-b bg-background px-4 py-2">
+          <div className="flex min-w-0 flex-1 items-center gap-2">
+            {isEditingTitle ? (
+              <Input
+                autoFocus
+                className="h-8 max-w-[300px] border-transparent px-2.5 py-1 font-semibold text-sm shadow-none"
+                onBlur={handleTitleSubmit}
+                onChange={(e) => setTitleValue(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleTitleSubmit()
+                  }
+                  if (e.key === 'Escape') {
+                    setIsEditingTitle(false)
+                    setTitleValue(slide?.title || '')
+                  }
+                }}
+                value={titleValue}
+              />
+            ) : (
+              <button
+                className="h-8 cursor-pointer truncate px-2.5 py-1 text-left font-semibold text-sm hover:text-primary"
+                onClick={() => setIsEditingTitle(true)}
+                type="button"
+              >
+                {slide?.title || 'Untitled Slide'}
+              </button>
+            )}
+          </div>
+          <div className="flex shrink-0 items-center gap-2">
             <Button
-              className="h-8 w-8"
-              onClick={onToggleRightPanel}
-              size="icon"
-              variant="ghost"
+              disabled={isPending || !slide}
+              onClick={handleSave}
+              size="sm"
+              variant="default"
             >
-              <PanelRightOpen className="h-4 w-4" />
+              {isPending ? '保存中...' : 'Save'}
             </Button>
-          )}
+            {isRightPanelCollapsed && onToggleRightPanel && (
+              <Button
+                className="h-8 w-8"
+                onClick={onToggleRightPanel}
+                size="icon"
+                variant="ghost"
+              >
+                <PanelRightOpen className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
         </div>
-      </div>
+      )}
       <div
         className={`flex min-h-0 flex-1 items-center justify-center overflow-hidden ${
           isFullscreen ? 'p-4' : 'p-8'
@@ -312,7 +314,6 @@ export function InfographicViewer({
           )}
         </div>
       </div>
-      {/* 工具栏 - 固定在底部，全屏时也显示，不会被压缩 */}
       <Toolbar
         currentIndex={currentIndex}
         isEmptyContent={isEmptyContent}

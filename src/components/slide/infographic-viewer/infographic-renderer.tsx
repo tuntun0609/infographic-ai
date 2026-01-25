@@ -1,6 +1,7 @@
 'use client'
 
 import { Infographic } from '@antv/infographic'
+import { useTheme } from 'next-themes'
 import { useCallback, useEffect, useRef } from 'react'
 
 interface InfographicRendererProps {
@@ -15,6 +16,7 @@ export function InfographicRenderer({
   containerRef,
 }: InfographicRendererProps) {
   const infographicInstanceRef = useRef<Infographic | null>(null)
+  const { resolvedTheme } = useTheme()
 
   // 清理 Infographic 实例
   const cleanupInfographic = useCallback(() => {
@@ -26,7 +28,7 @@ export function InfographicRenderer({
 
   // 渲染 Infographic（只在内容变化时渲染一次）
   const renderInfographic = useCallback(
-    (contentToRender: string) => {
+    (contentToRender: string, options: { theme: 'dark' | 'light' }) => {
       if (!containerRef.current) {
         return
       }
@@ -40,6 +42,7 @@ export function InfographicRenderer({
           container: containerRef.current,
           width: '100%',
           height: '100%',
+          theme: options.theme,
         })
 
         // 使用字符串渲染
@@ -65,7 +68,7 @@ export function InfographicRenderer({
     [cleanupInfographic, containerRef.current]
   )
 
-  // 只在内容变化时渲染一次
+  // 在内容或主题变化时重新渲染
   useEffect(() => {
     if (!(content && containerRef.current && !isEmptyContent)) {
       cleanupInfographic()
@@ -74,7 +77,9 @@ export function InfographicRenderer({
 
     // 延迟渲染以确保容器已挂载
     const timer = setTimeout(() => {
-      renderInfographic(content)
+      renderInfographic(content, {
+        theme: resolvedTheme === 'dark' ? 'dark' : 'light',
+      })
     }, 0)
 
     return () => {
@@ -84,6 +89,7 @@ export function InfographicRenderer({
   }, [
     content,
     isEmptyContent,
+    resolvedTheme, // 添加主题依赖，主题变化时重新渲染
     cleanupInfographic,
     renderInfographic,
     containerRef.current,
