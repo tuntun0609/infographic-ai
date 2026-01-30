@@ -1,4 +1,5 @@
 import { and, desc, eq, ilike } from 'drizzle-orm'
+import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { SlideList } from '@/components/slide/list/slide-list'
 import { db } from '@/db'
@@ -6,6 +7,12 @@ import { slide } from '@/db/schema'
 import { getSession } from '@/lib/auth'
 
 const PAGE_SIZE = 12
+
+export const metadata: Metadata = {
+  title: 'My Slides',
+  description:
+    'View and manage all your slides and infographics created in ASlide.',
+}
 
 export default async function SlidePage({
   searchParams,
