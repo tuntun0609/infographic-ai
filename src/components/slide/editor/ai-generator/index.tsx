@@ -49,10 +49,6 @@ export function AIGenerator({ slideId }: AIGeneratorProps) {
     [tempChatId, slide?.infographics, selectedId]
   )
 
-  useEffect(() => {
-    console.log(slide)
-  }, [slide])
-
   const {
     messages,
     sendMessage,
@@ -63,21 +59,11 @@ export function AIGenerator({ slideId }: AIGeneratorProps) {
     transport,
     id: tempChatId,
     onToolCall: ({ toolCall }) => {
-      console.log('[onToolCall] triggered:', toolCall)
-
-      // 检查是否是动态工具
-      if (toolCall.dynamic) {
-        console.log('[onToolCall] skipping dynamic tool')
-        return
-      }
-
       const { toolName, toolCallId, input } = toolCall
-      console.log('[onToolCall] processing:', { toolName, toolCallId, input })
 
       try {
         switch (toolName) {
           case 'createInfographic': {
-            console.log('[createInfographic] input:', input)
             const typedInput = input as {
               title?: string
               syntax?: string
@@ -101,10 +87,6 @@ export function AIGenerator({ slideId }: AIGeneratorProps) {
 
             if (existingId) {
               // 已经流式创建过，只需要更新最终内容
-              console.log('[createInfographic] updating existing:', {
-                existingId,
-                syntax: `${syntax.substring(0, 100)}...`,
-              })
               updateInfographicContent({
                 infographicId: existingId,
                 content: syntax,
@@ -119,11 +101,6 @@ export function AIGenerator({ slideId }: AIGeneratorProps) {
               const newId = nanoid()
               const afterId =
                 lastCreatedInfographicIdRef.current ?? selectedId ?? null
-              console.log('[createInfographic] creating:', {
-                newId,
-                afterId,
-                syntax: `${syntax.substring(0, 100)}...`,
-              })
               addInfographic({
                 infographic: {
                   id: newId,
@@ -138,7 +115,6 @@ export function AIGenerator({ slideId }: AIGeneratorProps) {
                 output: { success: true, id: newId, title },
               })
             }
-            console.log('[createInfographic] done')
             break
           }
           case 'editInfographic': {
