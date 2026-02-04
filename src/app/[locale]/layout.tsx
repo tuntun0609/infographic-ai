@@ -3,8 +3,8 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
+import { Toaster } from '@/components/ui/sonner'
 import { routing } from '@/i18n/routing'
-
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 
@@ -72,6 +72,7 @@ export default async function RootLayout({
         >
           <NextIntlClientProvider>{children}</NextIntlClientProvider>
           <Agentation />
+          <Toaster richColors />
         </ThemeProvider>
       </body>
     </html>

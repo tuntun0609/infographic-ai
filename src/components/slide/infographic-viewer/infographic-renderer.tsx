@@ -2,7 +2,13 @@
 
 import { Infographic } from '@antv/infographic'
 import { useTheme } from 'next-themes'
-import { useCallback, useEffect, useRef } from 'react'
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from 'react'
 
 interface InfographicRendererProps {
   content: string
@@ -10,13 +16,21 @@ interface InfographicRendererProps {
   containerRef: React.RefObject<HTMLDivElement | null>
 }
 
-export function InfographicRenderer({
-  content,
-  isEmptyContent,
-  containerRef,
-}: InfographicRendererProps) {
+export interface InfographicRendererRef {
+  getInstance: () => Infographic | null
+}
+
+export const InfographicRenderer = forwardRef<
+  InfographicRendererRef,
+  InfographicRendererProps
+>(function InfographicRenderer({ content, isEmptyContent, containerRef }, ref) {
   const infographicInstanceRef = useRef<Infographic | null>(null)
   const { resolvedTheme } = useTheme()
+
+  // 暴露 Infographic 实例给父组件
+  useImperativeHandle(ref, () => ({
+    getInstance: () => infographicInstanceRef.current,
+  }))
 
   // 清理 Infographic 实例
   const cleanupInfographic = useCallback(() => {
@@ -100,4 +114,4 @@ export function InfographicRenderer({
       <div className="h-full w-full bg-background" ref={containerRef} />
     </div>
   )
-}
+})

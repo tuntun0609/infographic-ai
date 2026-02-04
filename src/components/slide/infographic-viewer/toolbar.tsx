@@ -3,6 +3,7 @@
 import {
   ChevronLeft,
   ChevronRight,
+  Copy,
   Download,
   Maximize2,
   Plus,
@@ -17,11 +18,13 @@ interface ToolbarProps {
   totalCount: number
   isEmptyContent: boolean
   isFullscreen: boolean
+  isCopying?: boolean
   onPrevious: () => void
   onNext: () => void
   onAddSlide: () => void
   onDeleteSlide: () => void
   onDownload: () => void
+  onCopyAsPng: () => void
   onFullscreen: () => void
   onJumpTo: (index: number) => void
 }
@@ -31,11 +34,13 @@ export function Toolbar({
   totalCount,
   isEmptyContent,
   isFullscreen,
+  isCopying = false,
   onPrevious,
   onNext,
   onAddSlide,
   onDeleteSlide,
   onDownload,
+  onCopyAsPng,
   onFullscreen,
   onJumpTo,
 }: ToolbarProps) {
@@ -150,6 +155,15 @@ export function Toolbar({
         <div className="h-6 w-px shrink-0 bg-border" />
         {/* 工具按钮 */}
         <div className="flex shrink-0 items-center gap-1">
+          <Button
+            disabled={isEmptyContent || isCopying}
+            onClick={onCopyAsPng}
+            size="icon-sm"
+            title="复制为 PNG"
+            variant="ghost"
+          >
+            <Copy className="h-4 w-4" />
+          </Button>
           <Button
             disabled={isEmptyContent}
             onClick={onDownload}

@@ -24,7 +24,10 @@ import {
   slideAtom,
 } from '@/store/slide-store'
 import { EmptyState } from './empty-state'
-import { InfographicRenderer } from './infographic-renderer'
+import {
+  InfographicRenderer,
+  type InfographicRendererRef,
+} from './infographic-renderer'
 import { Toolbar } from './toolbar'
 
 interface InfographicViewerProps {
@@ -46,7 +49,9 @@ export function InfographicViewer({
   const deleteInfographic = useSetAtom(deleteInfographicAtom)
   const containerRef = useRef<HTMLDivElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
+  const infographicRendererRef = useRef<InfographicRendererRef>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [isCopying, setIsCopying] = useState(false)
   const [isPending, startTransition] = useTransition()
   const [isEditingTitle, setIsEditingTitle] = useState(false)
   const [titleValue, setTitleValue] = useState(slide?.title || '')
@@ -161,6 +166,42 @@ export function InfographicViewer({
       !selectedInfographic?.content || selectedInfographic.content.trim() === ''
     )
   }, [selectedInfographic?.content])
+
+  // 复制为 PNG
+  const handleCopyAsPng = useCallback(async () => {
+    const infographicInstance = infographicRendererRef.current?.getInstance()
+    if (!infographicInstance) {
+      toast.error('无法获取信息图实例')
+      return
+    }
+
+    setIsCopying(true)
+    try {
+      // 使用 @antv/infographic 的 toDataURL 方法导出 PNG
+      const dataUrl = await infographicInstance.toDataURL({
+        type: 'png',
+        dpr: 2, // 使用 2x 分辨率以获得更清晰的图像
+      })
+
+      // 将 Data URL 转换为 Blob
+      const response = await fetch(dataUrl)
+      const blob = await response.blob()
+
+      // 使用 Clipboard API 复制图片
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          [blob.type]: blob,
+        }),
+      ])
+
+      toast.success('已复制为 PNG')
+    } catch (error) {
+      console.error('Failed to copy as PNG:', error)
+      toast.error('复制失败')
+    } finally {
+      setIsCopying(false)
+    }
+  }, [])
 
   // 工具栏操作函数
   const handleDownload = useCallback(() => {
@@ -336,15 +377,18 @@ export function InfographicViewer({
               containerRef={containerRef}
               content={selectedInfographic.content}
               isEmptyContent={isEmptyContent}
+              ref={infographicRendererRef}
             />
           )}
         </div>
       </div>
       <Toolbar
         currentIndex={currentIndex}
+        isCopying={isCopying}
         isEmptyContent={isEmptyContent}
         isFullscreen={isFullscreen}
         onAddSlide={handleAddSlide}
+        onCopyAsPng={handleCopyAsPng}
         onDeleteSlide={handleDeleteSlide}
         onDownload={handleDownload}
         onFullscreen={handleFullscreen}
