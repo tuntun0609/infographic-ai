@@ -21,12 +21,14 @@ export function SlideSidebar({
   return (
     <Sidebar {...props}>
       <SidebarHeader className="px-2 pt-4">
-        <div className="flex items-center gap-3 px-2 py-1.5">
-          <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-foreground text-background">
-            <LogoIcon className="size-5" uniColor />
+        <Link href="/slide">
+          <div className="flex cursor-pointer items-center gap-3 rounded-lg px-2 py-1.5 transition-colors hover:bg-accent">
+            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-foreground text-background">
+              <LogoIcon className="size-5" uniColor />
+            </div>
+            <span className="font-bold text-lg tracking-tight">AI Slide</span>
           </div>
-          <span className="font-bold text-lg tracking-tight">AI Slide</span>
-        </div>
+        </Link>
 
         <div className="mt-4 px-2">
           <NewSlideButton />
