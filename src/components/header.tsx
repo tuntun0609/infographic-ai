@@ -10,10 +10,9 @@ import { authClient } from '@/lib/auth-client'
 import { cn } from '@/lib/utils'
 
 const menuItems = [
-  { name: 'Features', href: '#link' },
-  { name: 'Solution', href: '#link' },
-  { name: 'Pricing', href: '#link' },
-  { name: 'About', href: '#link' },
+  { name: 'Features', href: '#features' },
+  { name: 'Showcase', href: '#showcase' },
+  { name: 'Pricing', href: '#pricing' },
 ]
 
 const UserButtonContent = ({
