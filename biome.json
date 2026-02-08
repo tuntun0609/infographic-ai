@@ -39,7 +39,8 @@
           "options": {
             "style": "interface"
           }
-        }
+        },
+        "useBlockStatements": "warn"
       },
       "suspicious": {
         "noUnknownAtRules": "off",

@@ -25,6 +25,7 @@ export const InfographicRenderer = forwardRef<
   InfographicRendererProps
 >(function InfographicRenderer({ content, isEmptyContent, containerRef }, ref) {
   const infographicInstanceRef = useRef<Infographic | null>(null)
+  const previousThemeRef = useRef<'dark' | 'light' | null>(null)
   const { resolvedTheme } = useTheme()
 
   // 暴露 Infographic 实例给父组件
@@ -38,20 +39,34 @@ export const InfographicRenderer = forwardRef<
       infographicInstanceRef.current.destroy()
       infographicInstanceRef.current = null
     }
+    previousThemeRef.current = null
   }, [])
 
-  // 渲染 Infographic（只在内容变化时渲染一次）
+  // 渲染或更新 Infographic
   const renderInfographic = useCallback(
     (contentToRender: string, options: { theme: 'dark' | 'light' }) => {
       if (!containerRef.current) {
         return
       }
 
-      cleanupInfographic()
-      containerRef.current.innerHTML = ''
-
       try {
-        // 创建 Infographic 实例，使用 100% 宽度和高度，让 SVG 自适应容器
+        // 如果实例已存在，使用 update 方法更新
+        if (infographicInstanceRef.current) {
+          // 如果主题变化了，先更新主题，再更新内容
+          if (previousThemeRef.current !== options.theme) {
+            infographicInstanceRef.current.update({
+              theme: options.theme,
+            })
+          }
+          // 更新内容（字符串会被解析为 DSL）
+          infographicInstanceRef.current.update(contentToRender)
+          previousThemeRef.current = options.theme
+          return
+        }
+
+        // 如果实例不存在，创建新实例并渲染
+        containerRef.current.innerHTML = ''
+
         const infographic = new Infographic({
           container: containerRef.current,
           width: '100%',
@@ -62,8 +77,9 @@ export const InfographicRenderer = forwardRef<
         // 使用字符串渲染
         infographic.render(contentToRender)
 
-        // 保存实例引用
+        // 保存实例引用和主题
         infographicInstanceRef.current = infographic
+        previousThemeRef.current = options.theme
       } catch (error) {
         console.error('Failed to render infographic:', error)
         // 显示错误信息
@@ -79,10 +95,10 @@ export const InfographicRenderer = forwardRef<
         }
       }
     },
-    [cleanupInfographic, containerRef.current]
+    [containerRef]
   )
 
-  // 在内容或主题变化时重新渲染
+  // 在内容或主题变化时渲染或更新
   useEffect(() => {
     if (!(content && containerRef.current && !isEmptyContent)) {
       cleanupInfographic()
@@ -98,16 +114,20 @@ export const InfographicRenderer = forwardRef<
 
     return () => {
       clearTimeout(timer)
-      cleanupInfographic()
     }
   }, [
     content,
     isEmptyContent,
-    resolvedTheme, // 添加主题依赖，主题变化时重新渲染
-    cleanupInfographic,
+    resolvedTheme, // 添加主题依赖，主题变化时更新
     renderInfographic,
-    containerRef.current,
+    cleanupInfographic,
+    containerRef,
   ])
+
+  // 组件卸载时清理实例
+  useEffect(() => {
+    return cleanupInfographic
+  }, [cleanupInfographic])
 
   return (
     <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
