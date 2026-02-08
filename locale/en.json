@@ -9,6 +9,46 @@
     "signUp": "Sign Up",
     "getStarted": "Get Started",
     "signOut": "Sign Out",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "home": "Home",
+    "workspace": "Workspace",
+    "showcase": "Showcase",
+    "price": "Pricing"
+  },
+  "pricing": {
+    "title": "Pricing that Scales with You",
+    "description": "Choose the plan that best fits your needs and start your creative journey.",
+    "getStarted": "Get Started",
+    "comingSoon": "Coming Soon",
+    "free": {
+      "planName": "Free",
+      "price": "$0 / mo",
+      "perEditor": "Per editor",
+      "features": {
+        "createSlide": "Create Slides",
+        "infographicEditor": "Infographic Editor",
+        "aiAssisted": "AI-Assisted Editing"
+      }
+    },
+    "pro": {
+      "planName": "Pro",
+      "price": "$ ?? / mo",
+      "perEditor": "Per editor",
+      "everythingInFreePlus": "Everything in Free Plan, plus:",
+      "features": {
+        "everythingInFree": "Everything in Free Plan",
+        "cloudStorage": "5GB Cloud Storage",
+        "support": "Email and Chat Support",
+        "communityForum": "Access to Community Forum",
+        "singleUser": "Single User Access",
+        "templates": "Access to Basic Templates",
+        "mobileApp": "Mobile App Access",
+        "customReport": "1 Custom Report Per Month",
+        "updates": "Monthly Product Updates",
+        "security": "Standard Security Features",
+        "betterAIModel": "Better AI Models",
+        "fileUpload": "File Upload"
+      }
+    }
   }
 }

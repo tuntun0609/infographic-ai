@@ -9,6 +9,46 @@
     "signUp": "注册",
     "getStarted": "开始使用",
     "signOut": "退出登录",
-    "loading": "加载中..."
+    "loading": "加载中...",
+    "home": "首页",
+    "workspace": "工作空间",
+    "showcase": "作品展示",
+    "price": "定价"
+  },
+  "pricing": {
+    "title": "灵活的定价方案",
+    "description": "选择最适合您的计划，开启您的创作之旅。",
+    "getStarted": "开始使用",
+    "comingSoon": "Coming Soon",
+    "free": {
+      "planName": "免费版",
+      "price": "¥0 / 月",
+      "perEditor": "每位编辑者",
+      "features": {
+        "createSlide": "创建 Slide",
+        "infographicEditor": "信息图编辑器",
+        "aiAssisted": "AI 辅助编辑"
+      }
+    },
+    "pro": {
+      "planName": "专业版",
+      "price": "¥ ? / 月",
+      "perEditor": "每位编辑者",
+      "everythingInFreePlus": "免费版的所有功能，以及：",
+      "features": {
+        "everythingInFree": "免费版的所有功能",
+        "cloudStorage": "5GB 云存储空间",
+        "support": "邮件和聊天支持",
+        "communityForum": "社区论坛访问权限",
+        "singleUser": "单用户访问",
+        "templates": "基础模板库访问",
+        "mobileApp": "移动应用访问",
+        "customReport": "每月 1 份自定义报告",
+        "updates": "每月产品更新",
+        "security": "标准安全功能",
+        "betterAIModel": "更好的 AI 模型",
+        "fileUpload": "文件上传"
+      }
+    }
   }
 }

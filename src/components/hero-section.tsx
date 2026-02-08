@@ -3,18 +3,22 @@ import {
   BarChart3,
   Check,
   Eye,
-  MousePointer,
+  Palette,
   Play,
   Sparkles,
   Star,
+  Wand2,
+  Zap,
 } from 'lucide-react'
 import type { Variants } from 'motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { AnimatedGroup } from '@/components/ui/animated-group'
 import { Button } from '@/components/ui/button'
+import { AIPrinciplesShowcase } from './ai-principles-showcase'
 import { HeroHeader } from './header'
 import { HeroInfographicPreview } from './hero-infographic-preview'
+import Pricing from './pricing'
 
 const transitionVariants = {
   item: {
@@ -38,22 +42,28 @@ const transitionVariants = {
 
 const features = [
   {
+    icon: Zap,
+    title: 'Lightning Fast',
+    description:
+      'Generate professional infographics in seconds. From data to visual, instantly.',
+  },
+  {
     icon: Eye,
-    title: 'Real-time Preview',
+    title: 'Real-time Editing',
     description:
-      'See your changes instantly as the AI integrates your data. No loading bars, just instant visual feedback.',
+      'See changes instantly. Drag, resize, edit—zero delay, seamless workflow.',
   },
   {
-    icon: Sparkles,
-    title: 'AI-Driven Edits',
+    icon: Palette,
+    title: 'Beautiful Design',
     description:
-      'Ask for changes in plain English like "make it pop" or "use warmer colors" and watch the magic happen.',
+      'Auto-optimized colors, typography, and layouts. Publication-ready quality.',
   },
   {
-    icon: MousePointer,
-    title: 'Precise Control',
+    icon: Wand2,
+    title: 'AI-Powered',
     description:
-      'AI does the heavy lifting, but you stay in control. Fine-tune every pixel manually when you need absolute perfection.',
+      'Smart suggestions for charts, layouts, and styles. Describe your vision in plain English.',
   },
 ]
 
@@ -125,7 +135,7 @@ export default function HeroSection() {
                 <AnimatedGroup variants={transitionVariants as Variants}>
                   <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 font-medium text-primary text-sm">
                     <Sparkles className="size-4" />
-                    <span>v2.0 is here</span>
+                    <span>Start Creating Free</span>
                   </div>
                 </AnimatedGroup>
 
@@ -169,9 +179,9 @@ export default function HeroSection() {
                   }
                 >
                   <p className="mt-6 max-w-lg text-lg text-muted-foreground leading-relaxed">
-                    Transform raw data into stunning visual art instantly. The
-                    world&apos;s first AI-powered infographic engine that gives
-                    you precise control over every pixel.
+                    Transform raw data into stunning visual art instantly.
+                    AI-powered infographic engine that gives you precise control
+                    over every pixel.
                   </p>
                 </AnimatedGroup>
 
@@ -214,7 +224,7 @@ export default function HeroSection() {
                   </Button>
                 </AnimatedGroup>
 
-                <AnimatedGroup
+                {/* <AnimatedGroup
                   variants={
                     {
                       container: {
@@ -236,7 +246,7 @@ export default function HeroSection() {
                       NexGen
                     </span>
                   </div>
-                </AnimatedGroup>
+                </AnimatedGroup> */}
               </div>
 
               {/* Right - Hero Visual */}
@@ -333,28 +343,30 @@ export default function HeroSection() {
           <div className="mx-auto max-w-7xl px-6">
             <div className="text-center">
               <h2 className="font-bold text-3xl tracking-tight md:text-4xl">
-                Powerful AI Features
+                Powerful Features
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-                Experience the future of design with tools built for speed,
-                precision, and creativity.
+                Fast, real-time, beautiful, and intelligent—everything you need
+                to create stunning infographics.
               </p>
             </div>
-            <div className="mt-16 grid gap-8 md:grid-cols-3">
+            <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
               {features.map((feature) => (
                 <div
-                  className="rounded-2xl border bg-card p-8 transition-shadow duration-300 hover:shadow-lg"
+                  className="group relative rounded-2xl border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                   key={feature.title}
                 >
-                  <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10">
-                    <feature.icon className="size-6 text-primary" />
+                  <div className="flex size-14 items-center justify-center rounded-xl bg-primary/10 transition-all duration-300 group-hover:scale-110 group-hover:bg-primary/20">
+                    <feature.icon className="size-7 text-primary" />
                   </div>
                   <h3 className="mt-6 font-semibold text-lg">
                     {feature.title}
                   </h3>
-                  <p className="mt-3 text-muted-foreground leading-relaxed">
+                  <p className="mt-3 text-muted-foreground text-sm leading-relaxed">
                     {feature.description}
                   </p>
+                  {/* Decorative gradient on hover */}
+                  <div className="absolute inset-0 -z-10 rounded-2xl bg-linear-to-br from-primary/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                 </div>
               ))}
             </div>
@@ -455,8 +467,22 @@ export default function HeroSection() {
           </div>
         </section>
 
+        {/* ===== AI Principles Showcase Section ===== */}
+        <section className="py-14 md:py-18" id="ai-principles">
+          <div className="mx-auto max-w-7xl px-6">
+            <div className="text-center">
+              <h2 className="font-bold text-3xl tracking-tight md:text-4xl">
+                Showcase
+              </h2>
+            </div>
+            <div className="mt-12">
+              <AIPrinciplesShowcase />
+            </div>
+          </div>
+        </section>
+
         {/* ===== Testimonials Section ===== */}
-        <section className="py-20 md:py-32">
+        <section className="py-14 md:py-24">
           <div className="mx-auto max-w-7xl px-6">
             <div className="flex items-end justify-between">
               <div>
@@ -517,6 +543,8 @@ export default function HeroSection() {
             </div>
           </div>
         </section>
+
+        <Pricing />
 
         {/* ===== CTA Section ===== */}
         <section className="px-6 pb-20 md:pb-32">

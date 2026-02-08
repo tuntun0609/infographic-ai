@@ -9,11 +9,7 @@ import { UserButton } from '@/components/user-button'
 import { authClient } from '@/lib/auth-client'
 import { cn } from '@/lib/utils'
 
-const menuItems = [
-  { name: 'Features', href: '#features' },
-  { name: 'Showcase', href: '#showcase' },
-  { name: 'Pricing', href: '#pricing' },
-]
+// Menu items will be generated using translations
 
 const UserButtonContent = ({
   session,
@@ -53,6 +49,14 @@ export const HeroHeader = () => {
   const [isScrolled, setIsScrolled] = React.useState(false)
   const t = useTranslations('header')
   const { data: session, isPending } = authClient.useSession()
+
+  // Generate menu items using translations
+  const menuItems = [
+    { name: t('home'), href: '/' },
+    { name: t('workspace'), href: '/slide' },
+    { name: t('showcase'), href: '#ai-principles' },
+    { name: t('price'), href: '#pricing' },
+  ]
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -168,14 +172,14 @@ export const HeroHeader = () => {
           className={cn(
             'mx-auto mt-2 max-w-6xl px-6 transition-all duration-300 lg:px-12',
             isScrolled &&
-              'max-w-4xl rounded-2xl border bg-background/50 backdrop-blur-lg lg:px-5'
+              'max-w-4xl rounded-2xl border bg-background/80 shadow-lg backdrop-blur-xl lg:px-5'
           )}
         >
           <div className="relative flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
             <div className="flex w-full justify-between lg:w-auto">
               <Link
                 aria-label="home"
-                className="flex items-center space-x-2"
+                className="flex items-center space-x-2 transition-opacity duration-200 hover:opacity-80"
                 href="/"
               >
                 <Logo />
@@ -197,8 +201,14 @@ export const HeroHeader = () => {
                 {menuItems.map((item, index) => (
                   <li key={index}>
                     <Link
-                      className="block text-muted-foreground duration-150 hover:text-accent-foreground"
+                      className="block text-muted-foreground transition-colors duration-200 hover:text-foreground"
                       href={item.href}
+                      onClick={() => {
+                        // Close mobile menu if open
+                        if (menuState) {
+                          setMenuState(false)
+                        }
+                      }}
                     >
                       <span>{item.name}</span>
                     </Link>
@@ -213,8 +223,9 @@ export const HeroHeader = () => {
                   {menuItems.map((item, index) => (
                     <li key={index}>
                       <Link
-                        className="block text-muted-foreground duration-150 hover:text-accent-foreground"
+                        className="block text-muted-foreground transition-colors duration-200 hover:text-foreground"
                         href={item.href}
+                        onClick={() => setMenuState(false)}
                       >
                         <span>{item.name}</span>
                       </Link>
