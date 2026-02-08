@@ -14,6 +14,7 @@ import Link from 'next/link'
 import { AnimatedGroup } from '@/components/ui/animated-group'
 import { Button } from '@/components/ui/button'
 import { HeroHeader } from './header'
+import { HeroInfographicPreview } from './hero-infographic-preview'
 
 const transitionVariants = {
   item: {
@@ -275,43 +276,15 @@ export default function HeroSection() {
                   />
 
                   {/* Main infographic card */}
-                  <div className="absolute top-12 right-4 bottom-12 left-8 rounded-2xl border bg-background p-6 shadow-2xl">
-                    <div className="flex items-center gap-3">
+                  <div className="absolute top-12 right-4 bottom-12 left-8 flex flex-col overflow-hidden rounded-2xl border bg-background shadow-2xl">
+                    <div className="flex shrink-0 items-center gap-3 px-4 pt-4">
                       <div className="size-3 rounded-full bg-red-400" />
                       <div className="size-3 rounded-full bg-yellow-400" />
                       <div className="size-3 rounded-full bg-green-400" />
                       <div className="ml-auto h-3 w-24 rounded-full bg-muted" />
                     </div>
-                    <div className="mt-6 space-y-4">
-                      <div className="h-4 w-40 rounded bg-muted" />
-                      <div className="flex gap-3">
-                        <div className="h-28 flex-1 rounded-lg bg-linear-to-t from-purple-500/20 to-purple-500/5" />
-                        <div className="h-28 flex-1 rounded-lg bg-linear-to-t from-violet-500/30 to-violet-500/5" />
-                        <div className="h-28 flex-1 rounded-lg bg-linear-to-t from-fuchsia-500/20 to-fuchsia-500/5" />
-                      </div>
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="h-20 rounded-lg border bg-muted/30 p-3">
-                          <div className="h-2.5 w-16 rounded bg-muted" />
-                          <div className="mt-2 h-2 w-full rounded bg-primary/20" />
-                          <div className="mt-1.5 h-2 w-3/4 rounded bg-primary/10" />
-                        </div>
-                        <div className="h-20 rounded-lg border bg-muted/30 p-3">
-                          <div className="h-2.5 w-12 rounded bg-muted" />
-                          <div className="mt-3 flex items-end gap-1.5">
-                            {[60, 80, 45, 90, 70, 55].map((h, i) => (
-                              <div
-                                className="flex-1 rounded-t bg-primary/30"
-                                key={i}
-                                style={{ height: `${h * 0.4}px` }}
-                              />
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="space-y-2">
-                        <div className="h-2.5 w-full rounded bg-muted" />
-                        <div className="h-2.5 w-5/6 rounded bg-muted" />
-                      </div>
+                    <div className="min-h-0 flex-1">
+                      <HeroInfographicPreview />
                     </div>
                   </div>
 
