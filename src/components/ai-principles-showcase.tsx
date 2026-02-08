@@ -21,12 +21,11 @@ interface ShowcaseCase {
 const SHOWCASE_CASES: ShowcaseCase[] = [
   {
     name: 'How AI Works',
-    theme: 'From data input to intelligent output',
+    theme: 'From data to intelligent output',
     slides: [
       `infographic sequence-pyramid-simple
 data
   title AI Intelligence Hierarchy
-  desc From data foundation to application layer
   sequences
     - label Data Layer
       desc Raw data: text, images, audio
@@ -34,136 +33,68 @@ data
       desc Extract key features and patterns
     - label Model Layer
       desc Neural networks learn patterns
-    - label Inference Layer
-      desc Intelligent reasoning and decisions
     - label Application Layer
       desc Apply to real scenarios
   order asc
 theme light
-  palette #667eea,#764ba2,#f093fb,#4facfe,#00f2fe`,
-      `infographic relation-dagre-flow-tb-simple-circle-node
-data
-  title AI Learning Methods
-  desc Relationships between learning approaches
-  nodes
-    - id supervised
-      label Supervised
-    - id unsupervised
-      label Unsupervised
-    - id reinforcement
-      label Reinforcement
-    - id transfer
-      label Transfer
-    - id federated
-      label Federated
-  relations
-    supervised -->|labeled data| transfer
-    unsupervised -->|patterns| transfer
-    reinforcement -->|strategies| transfer
-    transfer -->|knowledge| federated
-    federated -->|privacy| supervised
-theme light
-  palette #76c893,#52b69a,#34a0a4,#168aad,#1a759f`,
+  palette #667eea,#764ba2,#f093fb,#4facfe`,
       `infographic chart-pie-donut-pill-badge
 data
   title AI Applications
-  desc Distribution across fields
   values
     - label NLP
       value 28
-      desc Text understanding
     - label Vision
       value 25
-      desc Image recognition
     - label Speech
       value 15
-      desc Voice recognition
     - label Recommendations
       value 18
-      desc Personalized content
     - label Autonomous
       value 14
-      desc Self-driving
 theme light
   palette #f093fb,#4facfe,#43e97b,#fa709a,#fee140`,
     ],
   },
   {
     name: 'How to Make a Movie',
-    theme:
-      'The complete production process from creative concept to final film',
+    theme: 'From concept to final film',
     slides: [
       `infographic sequence-funnel-simple
 data
-  title Movie Production Funnel
-  desc The filtering and refinement process from concept to finished film
+  title Movie Production
   sequences
-    - label Concept Stage
-      desc Multiple creative ideas and script concepts, filtering viable projects
-    - label Development Stage
-      desc Refine scripts, secure funding, assemble core team
-    - label Production Stage
-      desc Actual filming, transforming scripts into visual footage
-    - label Post-Production Stage
-      desc Editing, VFX, sound design, refining into final work
-    - label Distribution Stage
-      desc Marketing, promotion, theatrical and streaming release
+    - label Concept
+      desc Ideas and script concepts
+    - label Development
+      desc Scripts, funding, team
+    - label Production
+      desc Filming and footage
+    - label Post-Production
+      desc Editing, VFX, sound
+    - label Distribution
+      desc Marketing and release
   order asc
 theme light
   palette #ef476f,#ffd166,#06d6a0,#118ab2,#073b4c`,
-      `infographic hierarchy-mindmap-branch-gradient-capsule-item
-data
-  title Film Production Team Structure
-  desc Organizational structure and collaboration relationships in filmmaking
-  root
-    label Film Project
-    children
-      - label Directing Department
-        children
-          - label Director
-          - label Assistant Director
-          - label Script Supervisor
-      - label Production Department
-        children
-          - label Producer
-          - label Executive Producer
-          - label Production Assistant
-      - label Camera Department
-        children
-          - label Cinematographer
-          - label Gaffer
-          - label Key Grip
-      - label Art Department
-        children
-          - label Production Designer
-          - label Prop Master
-          - label Costume Designer
-      - label Post-Production Department
-        children
-          - label Editor
-          - label VFX Artist
-          - label Sound Designer
-theme light
-  palette #ff6b6b,#4ecdc4,#45b7d1,#96ceb4,#ffeaa7`,
       `infographic sequence-color-snake-steps-horizontal-icon-line
 data
-  title Film Production Timeline
-  desc Complete timeline from project initiation to release
+  title Production Timeline
   sequences
-    - label Project Initiation
-      desc Project approval, funding secured, team assembly
+    - label Initiation
+      desc Funding, team assembly
       icon lucide/flag
     - label Pre-Production
-      desc Casting, location scouting, storyboarding, rehearsals
+      desc Casting, storyboarding
       icon lucide/clipboard-list
-    - label Principal Photography
-      desc On-set filming, footage capture, schedule management
+    - label Photography
+      desc On-set filming
       icon lucide/camera
     - label Post-Production
-      desc Editing, VFX, sound design, color grading
+      desc Editing, VFX
       icon lucide/scissors
-    - label Marketing & Distribution
-      desc Trailers, press tours, theatrical release
+    - label Distribution
+      desc Marketing, release
       icon lucide/megaphone
   order asc
 theme light
@@ -172,61 +103,39 @@ theme light
   },
   {
     name: 'How to Write an Article',
-    theme:
-      'A systematic writing approach from topic conception to final article',
+    theme: 'From topic to final article',
     slides: [
       `infographic sequence-circular-simple
 data
   title Article Writing Cycle
-  desc Writing is an iterative optimization process
   sequences
-    - label Brainstorm Topic
-      desc Determine theme, identify target audience
-    - label Gather Materials
-      desc Research, organize viewpoints, collect examples
-    - label Build Framework
-      desc Design structure, plan paragraphs, organize logic
-    - label Write Draft
-      desc Fill content, complete first draft
-    - label Revise & Polish
-      desc Optimize expression, adjust structure, refine details
-    - label Publish & Feedback
-      desc Publish article, collect feedback, continuous improvement
+    - label Brainstorm
+      desc Determine theme, audience
+    - label Gather
+      desc Research, collect examples
+    - label Outline
+      desc Design structure, logic
+    - label Draft
+      desc Write first draft
+    - label Revise
+      desc Polish and refine
   order asc
 theme light
   palette #4facfe,#00f2fe,#43e97b,#38f9d7,#667eea`,
-      `infographic compare-quadrant-quarter-simple-card
-data
-  title Article Quality Quadrant
-  desc Evaluate articles from importance and difficulty dimensions
-  compares
-    - label High Value Low Difficulty
-      desc Hot topics, common questions, easy to gain attention
-    - label High Value High Difficulty
-      desc In-depth analysis, original insights, requires expertise
-    - label Low Value Low Difficulty
-      desc Daily records, simple sharing, good for practice
-    - label Low Value High Difficulty
-      desc Niche topics, complex content, low ROI
-theme light
-  palette #f093fb,#4facfe,#43e97b,#fa709a,#fee140`,
       `infographic list-zigzag-down-compact-card
 data
-  title Core Elements of Great Articles
-  desc Build high-quality articles from multiple dimensions
+  title Core Elements
   lists
     - label Compelling Headline
-      desc Concise and powerful, sparks reading interest
+      desc Sparks reading interest
     - label Clear Structure
-      desc Logical and well-organized, distinct hierarchy
+      desc Logical and organized
     - label Rich Content
-      desc Novel viewpoints, solid arguments
+      desc Novel viewpoints
     - label Vivid Expression
-      desc Beautiful language, full of appeal
+      desc Beautiful language
     - label Deep Thinking
-      desc Unique insights, resonates with readers
-    - label Practical Value
-      desc Helpful to readers, meaningful and actionable
+      desc Unique insights
 theme light
   palette #76c893,#52b69a,#34a0a4,#168aad,#1a759f`,
     ],

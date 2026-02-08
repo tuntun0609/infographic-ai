@@ -374,21 +374,21 @@ export default function HeroSection() {
         </section>
 
         {/* ===== Interactive Workspace Section ===== */}
-        <section className="bg-muted/30 py-20 md:py-32" id="showcase">
+        <section className="bg-muted/30 py-20 md:py-32" id="editor">
           <div className="mx-auto max-w-7xl px-6">
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
               {/* Left Content */}
               <div>
                 <h2 className="font-bold text-3xl tracking-tight md:text-4xl">
-                  Interactive Workspace
+                  Powerful Slide Editor
                 </h2>
                 <p className="mt-2 text-lg text-muted-foreground italic">
-                  Designed for modern flow.
+                  Create stunning presentations with ease.
                 </p>
                 <p className="mt-6 text-muted-foreground leading-relaxed">
-                  A sleek interface designed for modern creators. Drag, drop,
-                  and let AI handle the layout, spacing, and hierarchy based on
-                  your content context.
+                  A feature-rich editor designed for creating professional
+                  presentations. Combine AI-powered content generation with
+                  intuitive editing tools to bring your ideas to life.
                 </p>
                 <div className="mt-8 space-y-5">
                   <div className="flex gap-4">
@@ -396,9 +396,10 @@ export default function HeroSection() {
                       <Check className="size-3.5 text-green-600 dark:text-green-400" />
                     </div>
                     <div>
-                      <div className="font-semibold">Smart Layout Engine</div>
+                      <div className="font-semibold">AI-Powered Content</div>
                       <div className="mt-0.5 text-muted-foreground text-sm">
-                        Automatically adjusts spacing based on content density.
+                        Generate slide content, outlines, and layouts
+                        automatically with AI assistance.
                       </div>
                     </div>
                   </div>
@@ -407,12 +408,22 @@ export default function HeroSection() {
                       <Check className="size-3.5 text-green-600 dark:text-green-400" />
                     </div>
                     <div>
-                      <div className="font-semibold">
-                        Contextual Suggestions
-                      </div>
+                      <div className="font-semibold">Rich Editing Tools</div>
                       <div className="mt-0.5 text-muted-foreground text-sm">
-                        AI suggests chart types that best represent your
-                        specific dataset.
+                        Customize text, images, and layouts with an intuitive
+                        drag-and-drop interface.
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+                      <Check className="size-3.5 text-green-600 dark:text-green-400" />
+                    </div>
+                    <div>
+                      <div className="font-semibold">Export Anywhere</div>
+                      <div className="mt-0.5 text-muted-foreground text-sm">
+                        Export your presentations to PPT, PDF, or share them
+                        directly with a link.
                       </div>
                     </div>
                   </div>
@@ -421,7 +432,7 @@ export default function HeroSection() {
                   className="mt-8 inline-flex items-center gap-1 font-medium text-primary text-sm hover:underline"
                   href="/slide"
                 >
-                  Explore the Interface
+                  Try the Editor
                   <ArrowRight className="size-4" />
                 </Link>
               </div>
@@ -430,37 +441,12 @@ export default function HeroSection() {
               <div className="relative">
                 <div className="overflow-hidden rounded-2xl border bg-background shadow-2xl">
                   <Image
-                    alt="Interactive Workspace"
-                    className="hidden w-full dark:block"
-                    height={1440}
-                    src="/mail2.png"
-                    width={2700}
+                    alt="Slide Editor"
+                    className="w-full"
+                    height={900}
+                    src="/editor-snapshot.png"
+                    width={1600}
                   />
-                  <Image
-                    alt="Interactive Workspace"
-                    className="w-full dark:hidden"
-                    height={1440}
-                    src="/mail2-light.png"
-                    width={2700}
-                  />
-                </div>
-                {/* AI Suggestion overlay */}
-                <div className="absolute bottom-4 -left-4 z-10 rounded-xl border bg-background p-4 shadow-lg md:bottom-8 md:-left-8">
-                  <div className="flex items-center gap-2 font-medium text-primary text-xs">
-                    <Sparkles className="size-3.5" />
-                    AI SUGGESTION
-                  </div>
-                  <p className="mt-2 max-w-[200px] text-muted-foreground text-xs">
-                    Try using a bar chart for this dataset to highlight trends
-                  </p>
-                  <div className="mt-3 flex gap-2">
-                    <span className="rounded-md bg-primary px-3 py-1 font-medium text-primary-foreground text-xs">
-                      Apply
-                    </span>
-                    <span className="rounded-md border px-3 py-1 font-medium text-muted-foreground text-xs">
-                      Dismiss
-                    </span>
-                  </div>
                 </div>
               </div>
             </div>
