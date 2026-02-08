@@ -1,21 +1,9 @@
 'use client'
 
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { PanelRightOpen } from 'lucide-react'
-import { motion } from 'motion/react'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { nanoid } from 'nanoid'
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  useTransition,
-} from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
-import { updateSlide } from '@/actions/slide'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import {
   addInfographicAtom,
   deleteInfographicAtom,
@@ -32,17 +20,11 @@ import { Toolbar } from './toolbar'
 
 interface InfographicViewerProps {
   slideId: string
-  isRightPanelCollapsed?: boolean
-  onToggleRightPanel?: () => void
 }
 
-export function InfographicViewer({
-  slideId,
-  isRightPanelCollapsed = false,
-  onToggleRightPanel,
-}: InfographicViewerProps) {
+export function InfographicViewer({ slideId }: InfographicViewerProps) {
   const selectedInfographic = useAtomValue(selectedInfographicAtom)
-  const [slide, setSlide] = useAtom(slideAtom)
+  const slide = useAtomValue(slideAtom)
   const selectedInfographicId = useAtomValue(selectedInfographicIdAtom)
   const setSelectedInfographicId = useSetAtom(selectedInfographicIdAtom)
   const addInfographic = useSetAtom(addInfographicAtom)
@@ -52,22 +34,6 @@ export function InfographicViewer({
   const infographicRendererRef = useRef<InfographicRendererRef>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [isCopying, setIsCopying] = useState(false)
-  const [isPending, startTransition] = useTransition()
-  const [isEditingTitle, setIsEditingTitle] = useState(false)
-  const [titleValue, setTitleValue] = useState(slide?.title || '')
-
-  useEffect(() => {
-    if (slide?.title) {
-      setTitleValue(slide.title)
-    }
-  }, [slide?.title])
-
-  const handleTitleSubmit = useCallback(() => {
-    setIsEditingTitle(false)
-    if (slide && titleValue.trim() !== '' && titleValue !== slide.title) {
-      setSlide({ ...slide, title: titleValue.trim() })
-    }
-  }, [slide, titleValue, setSlide])
 
   // 计算当前索引和总数
   const { currentIndex, totalCount } = useMemo(() => {
@@ -274,26 +240,6 @@ export function InfographicViewer({
     setIsFullscreen(!!document.fullscreenElement)
   }, [])
 
-  // 保存当前 slide 数据到数据库
-  const handleSave = useCallback(() => {
-    if (!slide) {
-      return
-    }
-
-    startTransition(async () => {
-      try {
-        await updateSlide(slideId, {
-          title: slide.title,
-          infographics: slide.infographics,
-        })
-        toast.success('保存成功')
-      } catch (error) {
-        toast.error('保存失败')
-        console.error('Failed to save slide:', error)
-      }
-    })
-  }, [slide, slideId])
-
   useEffect(() => {
     document.addEventListener('fullscreenchange', handleFullscreenChange)
     return () => {
@@ -308,87 +254,9 @@ export function InfographicViewer({
       }`}
       ref={wrapperRef}
     >
-      {/* Header */}
-      {!isFullscreen && (
-        <div className="flex h-14 shrink-0 items-center justify-between border-b bg-background px-4 py-2">
-          <div className="flex min-w-0 flex-1 items-center gap-2">
-            {isEditingTitle ? (
-              <Input
-                autoFocus
-                className="h-8 max-w-[300px] border-transparent px-2.5 py-1 font-semibold text-sm shadow-none"
-                onBlur={handleTitleSubmit}
-                onChange={(e) => setTitleValue(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    handleTitleSubmit()
-                  }
-                  if (e.key === 'Escape') {
-                    setIsEditingTitle(false)
-                    setTitleValue(slide?.title || '')
-                  }
-                }}
-                value={titleValue}
-              />
-            ) : (
-              <button
-                className="h-8 cursor-pointer truncate px-2.5 py-1 text-left font-semibold text-sm hover:text-primary"
-                onClick={() => setIsEditingTitle(true)}
-                type="button"
-              >
-                {slide?.title || 'Untitled Slide'}
-              </button>
-            )}
-          </div>
-          <div className="flex shrink-0 items-center gap-2">
-            <motion.div
-              animate={
-                isPending
-                  ? {
-                      scale: [1, 1.02, 1],
-                    }
-                  : {}
-              }
-              transition={
-                isPending
-                  ? {
-                      duration: 1.5,
-                      repeat: Number.POSITIVE_INFINITY,
-                      ease: 'easeInOut',
-                    }
-                  : {
-                      type: 'spring',
-                      stiffness: 400,
-                      damping: 17,
-                    }
-              }
-              whileHover={isPending ? {} : { scale: 1.05 }}
-              whileTap={isPending ? {} : { scale: 0.95 }}
-            >
-              <Button
-                disabled={isPending || !slide}
-                onClick={handleSave}
-                size="sm"
-                variant="default"
-              >
-                {isPending ? '保存中...' : 'Save'}
-              </Button>
-            </motion.div>
-            {isRightPanelCollapsed && onToggleRightPanel && (
-              <Button
-                className="h-8 w-8"
-                onClick={onToggleRightPanel}
-                size="icon"
-                variant="ghost"
-              >
-                <PanelRightOpen className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
-        </div>
-      )}
       <div
         className={`flex min-h-0 flex-1 items-center justify-center overflow-hidden ${
-          isFullscreen ? 'p-4' : 'p-8'
+          isFullscreen ? 'p-4' : 'p-6'
         }`}
       >
         <div

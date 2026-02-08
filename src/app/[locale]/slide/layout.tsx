@@ -28,7 +28,7 @@ export default async function SlideLayout({
     <SidebarProvider defaultOpen={defaultOpen}>
       <SlideSidebar />
       <SidebarInset className="flex h-screen flex-col">
-        <header className="sticky top-0 z-5 flex h-14 shrink-0 items-center justify-between bg-background/80 px-4 backdrop-blur-md">
+        <header className="sticky top-0 z-5 flex h-12 shrink-0 items-center justify-between bg-background/80 px-4 backdrop-blur-md">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
           </div>

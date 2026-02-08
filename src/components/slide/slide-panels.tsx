@@ -1,13 +1,17 @@
 'use client'
 
-import { useSetAtom } from 'jotai'
+import { useAtom, useSetAtom } from 'jotai'
 import Cookies from 'js-cookie'
-import { PanelRightClose } from 'lucide-react'
+import { PanelRightClose, PanelRightOpen } from 'lucide-react'
+import { motion } from 'motion/react'
 import { usePathname, useSearchParams } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, useTransition } from 'react'
 import type { Layout, PanelImperativeHandle } from 'react-resizable-panels'
 import { Group, Panel, Separator } from 'react-resizable-panels'
+import { toast } from 'sonner'
+import { updateSlide } from '@/actions/slide'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
 import {
@@ -35,7 +39,7 @@ export function SlidePanels({
   const panelRef = useRef<PanelImperativeHandle>(null)
   const [isCollapsed, setIsCollapsed] = useState(false)
   const pathname = usePathname()
-  const setSlide = useSetAtom(slideAtom)
+  const [slide, setSlide] = useAtom(slideAtom)
   const setSelectedInfographicId = useSetAtom(selectedInfographicIdAtom)
   const setEditingContent = useSetAtom(editingInfographicContentAtom)
   const lastSlideIdRef = useRef<string | null>(null)
@@ -44,6 +48,42 @@ export function SlidePanels({
     const tab = searchParams.get('tab')
     return tab === 'ai' ? 'ai' : 'editor'
   })
+
+  // Title editing state
+  const [isEditingTitle, setIsEditingTitle] = useState(false)
+  const [titleValue, setTitleValue] = useState(initialSlideData?.title || '')
+  const [isPending, startTransition] = useTransition()
+
+  useEffect(() => {
+    if (slide?.title) {
+      setTitleValue(slide.title)
+    }
+  }, [slide?.title])
+
+  const handleTitleSubmit = useCallback(() => {
+    setIsEditingTitle(false)
+    if (slide && titleValue.trim() !== '' && titleValue !== slide.title) {
+      setSlide({ ...slide, title: titleValue.trim() })
+    }
+  }, [slide, titleValue, setSlide])
+
+  const handleSave = useCallback(() => {
+    if (!slide) {
+      return
+    }
+    startTransition(async () => {
+      try {
+        await updateSlide(slideId, {
+          title: slide.title,
+          infographics: slide.infographics,
+        })
+        toast.success('保存成功')
+      } catch (error) {
+        toast.error('保存失败')
+        console.error('Failed to save slide:', error)
+      }
+    })
+  }, [slide, slideId])
 
   // 初始化 slide 数据 - 只在 slideId 或 initialSlideData 变化时运行
   useEffect(() => {
@@ -120,98 +160,168 @@ export function SlidePanels({
   }
 
   return (
-    <main className="flex h-full overflow-hidden p-4 pt-0">
-      {/* <JotaiDevTools /> */}
-      <Group
-        className="h-full w-full"
-        defaultLayout={
-          defaultLayout ?? {
-            'infographic-viewer': 70,
-            'infographic-editor': 30,
-          }
-        }
-        onLayoutChange={onLayoutChange}
-        orientation="horizontal"
-      >
-        <Panel
-          className="flex flex-col overflow-hidden rounded-xl border bg-card shadow-xs"
-          id="infographic-viewer"
-          minSize="400px"
-        >
-          <div className="relative min-h-0 flex-1">
-            <InfographicViewer
-              isRightPanelCollapsed={isCollapsed}
-              onToggleRightPanel={toggleCollapse}
-              slideId={slideId}
+    <main className="flex h-full flex-col overflow-hidden">
+      {/* Unified top bar */}
+      <div className="flex h-12 shrink-0 items-center justify-between border-t border-b px-4">
+        <div className="flex min-w-0 flex-1 items-center gap-2">
+          {isEditingTitle ? (
+            <Input
+              autoFocus
+              className="h-7 max-w-[300px] border-transparent px-2 py-1 font-medium text-sm shadow-none"
+              onBlur={handleTitleSubmit}
+              onChange={(e) => setTitleValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleTitleSubmit()
+                }
+                if (e.key === 'Escape') {
+                  setIsEditingTitle(false)
+                  setTitleValue(slide?.title || '')
+                }
+              }}
+              value={titleValue}
             />
-          </div>
-        </Panel>
-
-        <Separator
-          className="relative w-2 cursor-pointer rounded-full bg-transparent transition-all hover:bg-primary/5 focus-visible:outline-none data-[dragging=true]:bg-primary/10"
-          onClick={handleSeparatorClick}
-        >
-          <div className="mx-auto h-full w-px" />
-        </Separator>
-
-        <Panel
-          className={cn(
-            'overflow-hidden rounded-xl border bg-card shadow-xs transition-all duration-300',
-            isCollapsed ? 'border-transparent bg-transparent shadow-none' : ''
+          ) : (
+            <button
+              className="h-7 cursor-pointer truncate rounded-md px-2 py-1 text-left font-medium text-sm transition-colors hover:bg-muted"
+              onClick={() => setIsEditingTitle(true)}
+              type="button"
+            >
+              {slide?.title || 'Untitled Slide'}
+            </button>
           )}
-          collapsible
-          id="infographic-editor"
-          onResize={(size) => {
-            setIsCollapsed(size.asPercentage === 0)
-          }}
-          panelRef={panelRef}
+        </div>
+        <div className="flex shrink-0 items-center gap-1.5">
+          {isCollapsed && (
+            <Button
+              className="h-7 w-7"
+              onClick={toggleCollapse}
+              size="icon"
+              variant="ghost"
+            >
+              <PanelRightOpen className="h-3.5 w-3.5" />
+            </Button>
+          )}
+          <motion.div
+            animate={isPending ? { scale: [1, 1.02, 1] } : {}}
+            transition={
+              isPending
+                ? {
+                    duration: 1.5,
+                    repeat: Number.POSITIVE_INFINITY,
+                    ease: 'easeInOut',
+                  }
+                : { type: 'spring', stiffness: 400, damping: 17 }
+            }
+            whileHover={isPending ? {} : { scale: 1.03 }}
+            whileTap={isPending ? {} : { scale: 0.97 }}
+          >
+            <Button
+              className="h-7 px-3 text-xs"
+              disabled={isPending || !slide}
+              onClick={handleSave}
+              size="sm"
+              variant="default"
+            >
+              {isPending ? '保存中...' : 'Save'}
+            </Button>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Panel group */}
+      <div className="min-h-0 flex-1 p-3">
+        <Group
+          className="h-full w-full"
+          defaultLayout={
+            defaultLayout ?? {
+              'infographic-viewer': 70,
+              'infographic-editor': 30,
+            }
+          }
+          onLayoutChange={onLayoutChange}
+          orientation="horizontal"
         >
-          {!isCollapsed && (
-            <div className="flex h-full flex-col">
-              <Tabs
-                className="flex h-full flex-col"
-                onValueChange={handleTabChange}
-                value={currentTab}
-              >
-                <div className="flex h-14 items-center justify-between border-b p-2 px-4">
-                  <TabsList className="h-auto bg-transparent p-0">
-                    <TabsTrigger
-                      className="data-active:bg-transparent data-active:shadow-none"
-                      value="editor"
-                    >
-                      编辑器
-                    </TabsTrigger>
-                    <TabsTrigger
-                      className="data-active:bg-transparent data-active:shadow-none"
-                      value="ai"
-                    >
-                      AI 生成
-                    </TabsTrigger>
-                  </TabsList>
-                  <Button
-                    className="h-8 w-8"
-                    onClick={toggleCollapse}
-                    size="icon"
-                    variant="ghost"
-                  >
-                    <PanelRightClose className="h-4 w-4" />
-                  </Button>
-                </div>
-                <TabsContent
-                  className="min-h-0 flex-1"
-                  keepMounted
-                  value="editor"
-                >
-                  <InfographicEditor slideId={slideId} />
-                </TabsContent>
-                <TabsContent className="min-h-0 flex-1" keepMounted value="ai">
-                  <AIGenerator slideId={slideId} />
-                </TabsContent>
-              </Tabs>
+          <Panel
+            className="flex flex-col overflow-hidden rounded-lg border bg-card shadow-xs"
+            id="infographic-viewer"
+            minSize="400px"
+          >
+            <div className="relative min-h-0 flex-1">
+              <InfographicViewer slideId={slideId} />
             </div>
-          )}
-        </Panel>
-      </Group>
+          </Panel>
+
+          <Separator
+            className="relative w-1.5 cursor-col-resize rounded-full bg-transparent transition-colors hover:bg-primary/8 focus-visible:outline-none data-[dragging=true]:bg-primary/12"
+            onClick={handleSeparatorClick}
+          >
+            <div className="mx-auto h-full w-px" />
+          </Separator>
+
+          <Panel
+            className={cn(
+              'overflow-hidden rounded-lg border bg-card shadow-xs transition-all duration-200',
+              isCollapsed ? 'border-transparent bg-transparent shadow-none' : ''
+            )}
+            collapsible
+            id="infographic-editor"
+            onResize={(size) => {
+              setIsCollapsed(size.asPercentage === 0)
+            }}
+            panelRef={panelRef}
+          >
+            {!isCollapsed && (
+              <div className="flex h-full flex-col">
+                <Tabs
+                  className="flex h-full flex-col"
+                  onValueChange={handleTabChange}
+                  value={currentTab}
+                >
+                  <div className="flex h-10 items-center justify-between border-b px-3">
+                    <TabsList className="h-auto gap-0.5 bg-transparent p-0">
+                      <TabsTrigger
+                        className="h-7 rounded-md px-2.5 text-xs data-active:bg-muted data-active:shadow-none"
+                        value="editor"
+                      >
+                        Editor
+                      </TabsTrigger>
+                      <TabsTrigger
+                        className="h-7 rounded-md px-2.5 text-xs data-active:bg-muted data-active:shadow-none"
+                        value="ai"
+                      >
+                        AI
+                      </TabsTrigger>
+                    </TabsList>
+                    <Button
+                      className="h-7 w-7"
+                      onClick={toggleCollapse}
+                      size="icon"
+                      variant="ghost"
+                    >
+                      <PanelRightClose className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                  <TabsContent
+                    className="min-h-0 flex-1"
+                    keepMounted
+                    value="editor"
+                  >
+                    <InfographicEditor slideId={slideId} />
+                  </TabsContent>
+                  <TabsContent
+                    className="min-h-0 flex-1"
+                    keepMounted
+                    value="ai"
+                  >
+                    <AIGenerator slideId={slideId} />
+                  </TabsContent>
+                </Tabs>
+              </div>
+            )}
+          </Panel>
+        </Group>
+      </div>
     </main>
   )
 }
