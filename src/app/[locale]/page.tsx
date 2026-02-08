@@ -4,7 +4,7 @@ import HeroSection from '@/components/hero-section'
 export const metadata: Metadata = {
   title: 'Home',
   description:
-    'ASlide - AI-powered slide creation tool that helps you quickly create beautiful infographics and presentations.',
+    'InfographAI - AI-powered slide creation tool that helps you quickly create beautiful infographics and presentations.',
 }
 
 export default function Home() {

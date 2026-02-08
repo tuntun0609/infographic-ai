@@ -215,7 +215,7 @@ export default function HeroSection() {
                 className="block text-sm duration-150 hover:opacity-75"
                 href="/slide"
               >
-                <span>开始使用 ASlide</span>
+                <span>开始使用 InfographAI</span>
 
                 <ChevronRight className="ml-1 inline-block size-3" />
               </Link>

@@ -26,7 +26,9 @@ export function SlideSidebar({
             <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-foreground text-background">
               <LogoIcon className="size-5" uniColor />
             </div>
-            <span className="font-bold text-lg tracking-tight">AI Slide</span>
+            <span className="font-bold text-lg tracking-tight">
+              InfographAI
+            </span>
           </div>
         </Link>
 
