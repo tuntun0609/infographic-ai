@@ -3,11 +3,13 @@ import { Loader2, Menu, User, X } from 'lucide-react'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import React from 'react'
+import { LanguageSwitcher } from '@/components/language-switcher'
 import { Logo } from '@/components/logo'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { UserButton } from '@/components/user-button'
 import { authClient } from '@/lib/auth-client'
 import { cn } from '@/lib/utils'
+import { ThemeToggle } from './theme-toggle'
 
 // Menu items will be generated using translations
 
@@ -234,6 +236,10 @@ export const HeroHeader = () => {
                 </ul>
               </div>
               <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
+                <div>
+                  <LanguageSwitcher />
+                  <ThemeToggle />
+                </div>
                 {renderAuthButtons()}
               </div>
             </div>

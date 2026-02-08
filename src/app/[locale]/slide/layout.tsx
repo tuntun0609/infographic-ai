@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { LanguageSwitcher } from '@/components/language-switcher'
 import { SlideSidebar } from '@/components/slide/sidebar/app-sidebar'
 import { ThemeToggle } from '@/components/theme-toggle'
 import {
@@ -55,6 +56,7 @@ export default async function SlideLayout({
               <Gift className="h-4 w-4" /> Refer
             </Button> */}
 
+            <LanguageSwitcher />
             <ThemeToggle />
             {/* <div className="flex items-center gap-2 rounded-full border bg-background px-2.5 py-1 shadow-sm">
               <div className="flex h-5 w-5 items-center justify-center rounded-full bg-primary/10">
