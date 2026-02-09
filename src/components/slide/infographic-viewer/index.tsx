@@ -270,7 +270,7 @@ export function InfographicViewer({ slideId }: InfographicViewerProps) {
     >
       <div
         className={`flex min-h-0 flex-1 items-center justify-center overflow-hidden ${
-          isFullscreen ? 'p-4' : 'p-6'
+          isFullscreen ? 'p-4' : 'p-2 sm:p-6'
         }`}
       >
         <div

@@ -87,8 +87,8 @@ export function Toolbar({
   }
 
   return (
-    <div className="flex shrink-0 items-center justify-center border-t bg-background/80 p-1.5 backdrop-blur-sm">
-      <div className="flex min-w-0 items-center gap-1.5 rounded-lg bg-muted/50 px-2 py-1">
+    <div className="flex shrink-0 items-center justify-center border-t bg-background/80 p-1 backdrop-blur-sm sm:p-1.5">
+      <div className="flex min-w-0 items-center gap-1 overflow-x-auto rounded-lg bg-muted/50 px-1.5 py-1 sm:gap-1.5 sm:px-2">
         {/* 切换器 */}
         {totalCount > 0 && (
           <>

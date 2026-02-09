@@ -110,7 +110,7 @@ export function InfographicEditor({
   return (
     <div className="flex h-full w-full flex-col overflow-hidden">
       {/* View mode toggle */}
-      <div className="flex items-center gap-1 px-4 pt-3 pb-0">
+      <div className="flex items-center gap-1 px-3 pt-3 pb-0 sm:px-4">
         <Button
           disabled={!canShowForm}
           onClick={() => handleViewModeChange('form')}
@@ -130,7 +130,7 @@ export function InfographicEditor({
         </Button>
       </div>
 
-      <div className="flex-1 overflow-hidden p-4 pt-2">
+      <div className="flex-1 overflow-hidden p-3 pt-2 sm:p-4">
         {viewMode === 'form' && formData ? (
           <div className="h-full w-full overflow-hidden rounded-md border bg-background">
             <InfographicForm data={formData} onChange={handleFormDataChange} />

@@ -37,7 +37,7 @@ function getSubmitStatus(status: string) {
 
 export function InputArea({ status, isLoading, onSubmit }: InputAreaProps) {
   return (
-    <div className="border-t bg-background p-4">
+    <div className="border-t bg-background p-3 sm:p-4">
       <PromptInput onSubmit={onSubmit}>
         <PromptInputBody>
           <PromptInputTextarea
