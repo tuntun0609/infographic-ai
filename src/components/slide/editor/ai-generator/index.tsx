@@ -4,6 +4,7 @@ import { useChat } from '@ai-sdk/react'
 import { DefaultChatTransport } from 'ai'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { nanoid } from 'nanoid'
+import { useTranslations } from 'next-intl'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { PromptInputMessage } from '@/components/ai-elements/prompt-input'
 import {
@@ -18,6 +19,7 @@ import { useStreamingHandlers } from './hooks'
 import type { AIGeneratorProps, ChatMessage } from './types'
 
 export function AIGenerator({ slideId }: AIGeneratorProps) {
+  const t = useTranslations('aiGenerator')
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const selectedId = useAtomValue(selectedInfographicIdAtom)
@@ -68,7 +70,7 @@ export function AIGenerator({ slideId }: AIGeneratorProps) {
               title?: string
               syntax?: string
             }
-            const title = typedInput.title ?? '未命名信息图'
+            const title = typedInput.title ?? t('unnamedInfographic')
             const syntax = typedInput.syntax
             if (!syntax) {
               console.error('[createInfographic] missing syntax in input')
@@ -76,7 +78,7 @@ export function AIGenerator({ slideId }: AIGeneratorProps) {
                 tool: 'createInfographic',
                 toolCallId,
                 state: 'output-error',
-                errorText: '缺少 syntax 参数',
+                errorText: t('missingSyntax'),
               })
               break
             }
@@ -160,7 +162,8 @@ export function AIGenerator({ slideId }: AIGeneratorProps) {
             | 'deleteInfographic',
           toolCallId,
           state: 'output-error',
-          errorText: err instanceof Error ? err.message : '工具执行失败',
+          errorText:
+            err instanceof Error ? err.message : t('toolExecutionFailed'),
         })
       }
     },
@@ -181,11 +184,11 @@ export function AIGenerator({ slideId }: AIGeneratorProps) {
   // 监听错误状态
   useEffect(() => {
     if (status === 'error') {
-      const errorMessage = chatError?.message || '请求失败，请稍后重试'
+      const errorMessage = chatError?.message || t('requestFailed')
       setError(errorMessage)
       setIsSubmitting(false)
     }
-  }, [status, chatError])
+  }, [status, chatError, t])
 
   // 当 status 变为 streaming 时，重置 isSubmitting（因为此时 status 已经更新）
   useEffect(() => {
@@ -224,7 +227,7 @@ export function AIGenerator({ slideId }: AIGeneratorProps) {
     try {
       sendMessage({ text: trimmedInput })
     } catch (err) {
-      setError(err instanceof Error ? err.message : '生成失败，请稍后重试')
+      setError(err instanceof Error ? err.message : t('generationFailed'))
       setIsSubmitting(false)
     }
   }

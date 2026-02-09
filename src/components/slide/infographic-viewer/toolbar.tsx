@@ -11,6 +11,7 @@ import {
   Plus,
   Presentation,
 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
@@ -55,6 +56,7 @@ export function Toolbar({
   onFullscreen,
   onJumpTo,
 }: ToolbarProps) {
+  const t = useTranslations('slideViewer')
   const [isEditing, setIsEditing] = useState(false)
   const [inputValue, setInputValue] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
@@ -97,7 +99,7 @@ export function Toolbar({
                 disabled={totalCount <= 1}
                 onClick={onPrevious}
                 size="icon-sm"
-                title="上一个"
+                title={t('previous')}
                 variant="ghost"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -129,7 +131,7 @@ export function Toolbar({
                       handleClick()
                     }
                   }}
-                  title="点击跳转到指定页面"
+                  title={t('jumpToPage')}
                   type="button"
                 >
                   {currentIndex} / {totalCount}
@@ -139,7 +141,7 @@ export function Toolbar({
                 disabled={totalCount <= 1}
                 onClick={onNext}
                 size="icon-sm"
-                title="下一个"
+                title={t('next')}
                 variant="ghost"
               >
                 <ChevronRight className="h-4 w-4" />
@@ -154,7 +156,7 @@ export function Toolbar({
           <Button
             onClick={onAddSlide}
             size="icon-sm"
-            title="新增 slide"
+            title={t('addSlide')}
             variant="ghost"
           >
             <Plus className="h-4 w-4" />
@@ -170,7 +172,7 @@ export function Toolbar({
             disabled={isEmptyContent || isCopying}
             onClick={onCopyAsPng}
             size="icon-sm"
-            title="复制为 PNG"
+            title={t('copyAsPng')}
             variant="ghost"
           >
             <Copy className="h-4 w-4" />
@@ -181,7 +183,7 @@ export function Toolbar({
                 <Button
                   disabled={isEmptyContent}
                   size="icon-sm"
-                  title="下载"
+                  title={t('download')}
                   variant="ghost"
                 >
                   <Download className="h-4 w-4" />
@@ -191,25 +193,25 @@ export function Toolbar({
             <DropdownMenuContent align="center">
               <DropdownMenuItem onClick={() => onDownload('svg')}>
                 <FileType className="mr-2 h-4 w-4" />
-                <span>下载为 SVG</span>
+                <span>{t('downloadAsSvg')}</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => onDownload('png')}>
                 <FileImage className="mr-2 h-4 w-4" />
-                <span>下载为 PNG</span>
+                <span>{t('downloadAsPng')}</span>
               </DropdownMenuItem>
               <DropdownMenuItem
                 disabled={totalCount === 0}
                 onClick={onExportPptx}
               >
                 <Presentation className="mr-2 h-4 w-4" />
-                <span>导出为 PPT</span>
+                <span>{t('exportAsPpt')}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           <Button
             onClick={onFullscreen}
             size="icon-sm"
-            title={isFullscreen ? '退出全屏' : '全屏'}
+            title={isFullscreen ? t('exitFullscreen') : t('fullscreen')}
             variant="ghost"
           >
             <Maximize2 className="h-4 w-4" />

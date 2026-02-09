@@ -1,12 +1,12 @@
 'use client'
 import { Loader2, Menu, User, X } from 'lucide-react'
-import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import React from 'react'
 import { LanguageSwitcher } from '@/components/language-switcher'
 import { Logo } from '@/components/logo'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { UserButton } from '@/components/user-button'
+import { Link } from '@/i18n/navigation'
 import { authClient } from '@/lib/auth-client'
 import { cn } from '@/lib/utils'
 import { ThemeToggle } from './theme-toggle'
@@ -56,7 +56,7 @@ export const HeroHeader = () => {
   const menuItems = [
     { name: t('home'), href: '/' },
     { name: t('workspace'), href: '/slide' },
-    { name: t('showcase'), href: '#ai-principles' },
+    { name: t('showcase'), href: '#showcase' },
     { name: t('price'), href: '#pricing' },
   ]
 

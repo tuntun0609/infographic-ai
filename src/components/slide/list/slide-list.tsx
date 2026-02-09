@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { useTransition } from 'react'
 import { toast } from 'sonner'
 import { createSlide } from '@/actions/slide'
@@ -24,6 +25,7 @@ export function SlideList({
   totalPages,
   totalCount,
 }: SlideListProps) {
+  const t = useTranslations('slide')
   const [isPending, startTransition] = useTransition()
 
   const handleCreateSlide = () => {
@@ -31,7 +33,7 @@ export function SlideList({
       try {
         await createSlide()
       } catch {
-        toast.error('创建失败')
+        toast.error(t('createFailed'))
       }
     })
   }

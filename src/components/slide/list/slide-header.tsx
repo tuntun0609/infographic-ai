@@ -2,6 +2,7 @@
 
 import { Plus, Search } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { useCallback, useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -17,6 +18,7 @@ export function SlideHeader({
   onCreateSlide,
   isPending,
 }: SlideHeaderProps) {
+  const t = useTranslations('slide')
   const router = useRouter()
   const searchParams = useSearchParams()
   const [searchQuery, setSearchQuery] = useState(
@@ -50,7 +52,7 @@ export function SlideHeader({
     <header className="sticky top-0 z-5 flex flex-col gap-4 bg-background/80 px-4 py-4 backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-6 lg:px-8">
       <div className="flex items-center gap-3 sm:gap-4">
         <h1 className="font-medium text-lg tracking-tight sm:text-xl">
-          My Slides
+          {t('mySlides')}
         </h1>
         <span className="rounded-full bg-muted px-2.5 py-0.5 font-medium text-muted-foreground text-xs">
           {totalCount}
@@ -63,7 +65,7 @@ export function SlideHeader({
           <Input
             className="h-9 w-full rounded-full bg-muted/50 pl-9 transition-all hover:bg-muted focus:bg-background sm:w-64 lg:focus:w-80"
             onChange={(e) => handleSearchChange(e.target.value)}
-            placeholder="Search..."
+            placeholder={t('search')}
             value={searchQuery}
           />
         </div>
@@ -73,8 +75,8 @@ export function SlideHeader({
           onClick={onCreateSlide}
         >
           <Plus className="mr-2 size-4" />
-          <span className="sm:hidden lg:inline">New Slide</span>
-          <span className="hidden sm:inline lg:hidden">New</span>
+          <span className="sm:hidden lg:inline">{t('newSlide')}</span>
+          <span className="hidden sm:inline lg:hidden">{t('new')}</span>
         </Button>
       </div>
     </header>

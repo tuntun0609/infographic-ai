@@ -2,9 +2,10 @@
 
 import { Infographic } from '@antv/infographic'
 import { formatDistanceToNow } from 'date-fns'
-import { zhCN } from 'date-fns/locale'
+import { enUS, zhCN } from 'date-fns/locale'
 import { motion } from 'motion/react'
 import Image from 'next/image'
+import { useLocale } from 'next-intl'
 import { useEffect, useRef } from 'react'
 import type { slide } from '@/db/schema'
 import { Link } from '@/i18n/navigation'
@@ -59,8 +60,10 @@ function InfographicPreview({ content }: { content: string }) {
 }
 
 export function SlideCard({ slide }: SlideCardProps) {
+  const locale = useLocale()
   const firstInfographic = slide.infographics?.[0]
   const hasInfographic = firstInfographic?.content?.trim()
+  const dateLocale = locale === 'zh' ? zhCN : enUS
 
   return (
     <motion.div
@@ -79,7 +82,7 @@ export function SlideCard({ slide }: SlideCardProps) {
           ) : (
             <div className="flex items-center justify-center p-6">
               <Image
-                alt="信息图图标"
+                alt="Infographic Icon"
                 className="size-12 opacity-20"
                 height={48}
                 src="/infographic.svg"
@@ -102,11 +105,13 @@ export function SlideCard({ slide }: SlideCardProps) {
           </h3>
         </div>
         <div className="flex items-center justify-between text-muted-foreground text-xs">
-          <span>{slide.infographics?.length || 0} 页</span>
+          <span>
+            {slide.infographics?.length || 0} {locale === 'zh' ? '页' : 'pages'}
+          </span>
           <span className="text-[10px] sm:text-xs">
             {formatDistanceToNow(slide.updatedAt || slide.createdAt, {
               addSuffix: true,
-              locale: zhCN,
+              locale: dateLocale,
             })}
           </span>
         </div>

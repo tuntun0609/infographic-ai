@@ -2,6 +2,7 @@
 
 import { PanelRightOpen } from 'lucide-react'
 import { motion } from 'motion/react'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
@@ -34,6 +35,7 @@ export function SlideTopBar({
   onSave,
   onToggleCollapse,
 }: SlideTopBarProps) {
+  const t = useTranslations('slide')
   const hoverAnimation = isMobile || isPending ? {} : { scale: 1.03 }
 
   return (
@@ -70,7 +72,7 @@ export function SlideTopBar({
             onClick={() => onTitleEdit(true)}
             type="button"
           >
-            {slide?.title || 'Untitled Slide'}
+            {slide?.title || t('untitledSlide')}
           </button>
         )}
       </div>
@@ -106,7 +108,7 @@ export function SlideTopBar({
             size="sm"
             variant="default"
           >
-            {isPending ? '保存中...' : 'Save'}
+            {isPending ? t('saving') : t('save')}
           </Button>
         </motion.div>
       </div>

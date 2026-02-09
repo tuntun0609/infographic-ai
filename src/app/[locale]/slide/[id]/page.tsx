@@ -2,6 +2,7 @@ import { eq } from 'drizzle-orm'
 import type { Metadata } from 'next'
 import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 import { cache } from 'react'
 import type { Layout } from 'react-resizable-panels'
 import { SlidePanels } from '@/components/slide/slide-panels'
@@ -25,25 +26,30 @@ export async function generateMetadata({
 }: {
   params: Promise<{ id: string }>
 }): Promise<Metadata> {
+  const t = await getTranslations('slide')
   const { id } = await params
   const slideData = await getSlideData(id)
 
   if (!slideData) {
     return {
-      title: 'Slide Not Found',
+      title: t('slideNotFound'),
     }
   }
 
+  const slideTitle = slideData.title || t('untitledSlide')
+  const editText = t('editInInfographicAI')
+  const description = `${editText}: ${slideTitle}`
+
   return {
-    title: slideData.title || 'Untitled Slide',
-    description: `Edit in InfographicAI: ${slideData.title || 'Untitled Slide'}`,
+    title: slideTitle,
+    description,
     openGraph: {
-      title: `${slideData.title || 'Untitled Slide'} | InfographicAI`,
-      description: `Edit in InfographicAI: ${slideData.title || 'Untitled Slide'}`,
+      title: `${slideTitle} | InfographicAI`,
+      description,
     },
     twitter: {
-      title: `${slideData.title || 'Untitled Slide'} | InfographicAI`,
-      description: `Edit in InfographicAI: ${slideData.title || 'Untitled Slide'}`,
+      title: `${slideTitle} | InfographicAI`,
+      description,
     },
   }
 }

@@ -2,6 +2,7 @@
 
 import { LayoutTemplate, Plus } from 'lucide-react'
 import { motion } from 'motion/react'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 
 interface EmptyStateProps {
@@ -10,6 +11,8 @@ interface EmptyStateProps {
 }
 
 export function EmptyState({ onCreate, isPending }: EmptyStateProps) {
+  const t = useTranslations('slide.emptyState')
+
   return (
     <div className="flex h-full flex-col items-center justify-center px-4 text-center">
       <motion.div
@@ -22,9 +25,9 @@ export function EmptyState({ onCreate, isPending }: EmptyStateProps) {
           <LayoutTemplate className="size-8 text-muted-foreground/50 sm:size-10" />
         </div>
         <div className="space-y-1">
-          <h3 className="font-medium text-base sm:text-lg">开始你的创作</h3>
+          <h3 className="font-medium text-base sm:text-lg">{t('title')}</h3>
           <p className="max-w-xs text-muted-foreground text-xs sm:text-sm">
-            创建一个新的演示文稿，开始你的精彩演讲。
+            {t('description')}
           </p>
         </div>
         <Button
@@ -33,7 +36,7 @@ export function EmptyState({ onCreate, isPending }: EmptyStateProps) {
           onClick={onCreate}
         >
           <Plus className="mr-2 size-4" />
-          新建演示
+          {t('createPresentation')}
         </Button>
       </motion.div>
     </div>

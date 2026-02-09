@@ -1,6 +1,7 @@
 'use client'
 
 import { Trash2 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import {
   AlertDialog,
@@ -20,6 +21,7 @@ interface DeleteDialogProps {
 }
 
 export function DeleteDialog({ onDelete }: DeleteDialogProps) {
+  const t = useTranslations('slideViewer')
   const [isOpen, setIsOpen] = useState(false)
 
   const handleDelete = () => {
@@ -31,22 +33,20 @@ export function DeleteDialog({ onDelete }: DeleteDialogProps) {
     <AlertDialog onOpenChange={setIsOpen} open={isOpen}>
       <AlertDialogTrigger
         render={
-          <Button size="icon-sm" title="删除 slide" variant="ghost">
+          <Button size="icon-sm" title={t('deleteSlide')} variant="ghost">
             <Trash2 className="h-4 w-4" />
           </Button>
         }
       />
       <AlertDialogContent size="sm">
         <AlertDialogHeader>
-          <AlertDialogTitle>确认删除</AlertDialogTitle>
-          <AlertDialogDescription>
-            确定要删除当前信息图吗？此操作无法撤销。
-          </AlertDialogDescription>
+          <AlertDialogTitle>{t('confirmDelete')}</AlertDialogTitle>
+          <AlertDialogDescription>{t('deleteWarning')}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>取消</AlertDialogCancel>
+          <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
           <AlertDialogAction onClick={handleDelete} variant="destructive">
-            删除
+            {t('delete')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

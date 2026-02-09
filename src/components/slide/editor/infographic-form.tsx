@@ -10,8 +10,8 @@ import {
 import type { DragControls } from 'motion/react'
 import { Reorder, useDragControls } from 'motion/react'
 import { nanoid } from 'nanoid'
+import { useTranslations } from 'next-intl'
 import { useCallback, useRef, useState } from 'react'
-
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -37,6 +37,7 @@ interface InfographicFormProps {
 }
 
 export function InfographicForm({ data, onChange }: InfographicFormProps) {
+  const t = useTranslations('slideEditor')
   const updateField = useCallback(
     <K extends keyof InfographicData>(key: K, value: InfographicData[K]) => {
       onChange({ ...data, [key]: value })
@@ -116,11 +117,11 @@ export function InfographicForm({ data, onChange }: InfographicFormProps) {
     data.template.startsWith('hierarchy-') ||
     isRoot
 
-  let itemsLabel = '数据项'
+  let itemsLabel = t('dataItems')
   if (isRelation) {
-    itemsLabel = '节点'
+    itemsLabel = t('nodes')
   } else if (isRoot) {
-    itemsLabel = '根节点'
+    itemsLabel = t('rootNode')
   }
 
   return (
@@ -128,15 +129,17 @@ export function InfographicForm({ data, onChange }: InfographicFormProps) {
       <div className="flex flex-col gap-4 p-4">
         {/* Template Selection */}
         <div className="flex flex-col gap-1.5">
-          <Label className="text-muted-foreground text-xs">模板</Label>
+          <Label className="text-muted-foreground text-xs">
+            {t('template')}
+          </Label>
           <Select onValueChange={handleTemplateChange} value={data.template}>
             <SelectTrigger className="w-full">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
               {TEMPLATE_GROUPS.map((group) => (
-                <SelectGroup key={group.label}>
-                  <SelectLabel>{group.label}</SelectLabel>
+                <SelectGroup key={group.labelKey}>
+                  <SelectLabel>{t(group.labelKey)}</SelectLabel>
                   {group.templates.map((t) => (
                     <SelectItem key={t} value={t}>
                       {t}
@@ -150,19 +153,21 @@ export function InfographicForm({ data, onChange }: InfographicFormProps) {
 
         {/* Title & Description */}
         <div className="flex flex-col gap-1.5">
-          <Label className="text-muted-foreground text-xs">标题</Label>
+          <Label className="text-muted-foreground text-xs">{t('title')}</Label>
           <Input
             onChange={(e) => updateField('title', e.target.value || undefined)}
-            placeholder="信息图标题"
+            placeholder={t('infographicTitle')}
             value={data.title ?? ''}
           />
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <Label className="text-muted-foreground text-xs">描述</Label>
+          <Label className="text-muted-foreground text-xs">
+            {t('description')}
+          </Label>
           <Input
             onChange={(e) => updateField('desc', e.target.value || undefined)}
-            placeholder="信息图描述"
+            placeholder={t('infographicDescription')}
             value={data.desc ?? ''}
           />
         </div>
@@ -185,6 +190,7 @@ export function InfographicForm({ data, onChange }: InfographicFormProps) {
               item={data.items[0]}
               onChange={(item) => updateItem(0, item)}
               showValue={showValue}
+              t={t}
             />
           ) : (
             <SortableList
@@ -199,6 +205,7 @@ export function InfographicForm({ data, onChange }: InfographicFormProps) {
                   onRemove={() => removeItem(index)}
                   showChildren={showChildren}
                   showValue={showValue}
+                  t={t}
                 />
               )}
             />
@@ -208,7 +215,9 @@ export function InfographicForm({ data, onChange }: InfographicFormProps) {
         {/* Relations (for relation-* templates) */}
         {isRelation && data.relations && (
           <div className="flex flex-col gap-2">
-            <Label className="text-muted-foreground text-xs">关系</Label>
+            <Label className="text-muted-foreground text-xs">
+              {t('relations')}
+            </Label>
             <div className="flex flex-col gap-1">
               {data.relations.map((rel, index) => (
                 <Input
@@ -234,7 +243,7 @@ export function InfographicForm({ data, onChange }: InfographicFormProps) {
                 variant="ghost"
               >
                 <PlusIcon className="size-3" />
-                添加关系
+                {t('addRelation')}
               </Button>
             </div>
           </div>
@@ -242,25 +251,25 @@ export function InfographicForm({ data, onChange }: InfographicFormProps) {
 
         {/* Theme */}
         <div className="flex flex-col gap-2">
-          <Label className="text-muted-foreground text-xs">主题</Label>
+          <Label className="text-muted-foreground text-xs">{t('theme')}</Label>
           <div className="flex gap-2">
             <Select
               onValueChange={handleThemeModeChange}
               value={data.theme?.mode ?? ''}
             >
               <SelectTrigger className="w-24">
-                <SelectValue placeholder="自动" />
+                <SelectValue placeholder={t('auto')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">自动</SelectItem>
-                <SelectItem value="light">Light</SelectItem>
-                <SelectItem value="dark">Dark</SelectItem>
+                <SelectItem value="">{t('auto')}</SelectItem>
+                <SelectItem value="light">{t('light')}</SelectItem>
+                <SelectItem value="dark">{t('dark')}</SelectItem>
               </SelectContent>
             </Select>
             <Input
               className="flex-1"
               onChange={(e) => handlePaletteChange(e.target.value)}
-              placeholder="配色: #fff,#000 或 antv"
+              placeholder={t('colorPalette')}
               value={data.theme?.palette?.join(',') ?? ''}
             />
           </div>
@@ -383,6 +392,7 @@ interface ItemEditorProps {
   showValue: boolean
   showChildren: boolean
   dragControls?: DragControls
+  t: (key: string) => string
 }
 
 function ItemEditor({
@@ -393,6 +403,7 @@ function ItemEditor({
   showValue,
   showChildren,
   dragControls,
+  t,
 }: ItemEditorProps) {
   const [expanded, setExpanded] = useState(false)
 
@@ -445,7 +456,7 @@ function ItemEditor({
             <Input
               className="h-7 flex-1 text-xs"
               onChange={(e) => updateField('label', e.target.value)}
-              placeholder="标签"
+              placeholder={t('label')}
               value={item.label ?? ''}
             />
           </div>
@@ -454,14 +465,14 @@ function ItemEditor({
           <Input
             className="h-7 text-xs"
             onChange={(e) => updateField('label', e.target.value)}
-            placeholder="标签"
+            placeholder={t('label')}
             value={item.label ?? ''}
           />
         )}
         <Input
           className="h-7 text-xs"
           onChange={(e) => updateField('desc', e.target.value)}
-          placeholder="描述"
+          placeholder={t('desc')}
           value={item.desc ?? ''}
         />
         <div className="flex gap-1.5">
@@ -469,21 +480,21 @@ function ItemEditor({
             <Input
               className="h-7 w-20 text-xs"
               onChange={(e) => updateField('value', e.target.value)}
-              placeholder="数值"
+              placeholder={t('value')}
               value={item.value ?? ''}
             />
           )}
           <Input
             className="h-7 flex-1 text-xs"
             onChange={(e) => updateField('icon', e.target.value)}
-            placeholder="图标 (如 lucide/star)"
+            placeholder={t('icon')}
             value={item.icon ?? ''}
           />
           {item.id !== undefined && (
             <Input
               className="h-7 w-16 text-xs"
               onChange={(e) => updateField('id', e.target.value)}
-              placeholder="ID"
+              placeholder={t('id')}
               value={item.id ?? ''}
             />
           )}
@@ -494,7 +505,9 @@ function ItemEditor({
       {showChildren && expanded && (
         <div className="mt-2 ml-4 border-l pl-2">
           <div className="mb-1 flex items-center justify-between">
-            <span className="text-[10px] text-muted-foreground">子项</span>
+            <span className="text-[10px] text-muted-foreground">
+              {t('children')}
+            </span>
             <Button
               onClick={() => {
                 onChange({
@@ -533,6 +546,7 @@ function ItemEditor({
                     })
                   }}
                   showValue={showValue}
+                  t={t}
                 />
               )}
             />
@@ -552,6 +566,7 @@ interface ChildItemEditorProps {
   onRemove: () => void
   showValue: boolean
   dragControls?: DragControls
+  t: (key: string) => string
 }
 
 function ChildItemEditor({
@@ -560,6 +575,7 @@ function ChildItemEditor({
   onChange,
   onRemove,
   dragControls,
+  t,
 }: ChildItemEditorProps) {
   return (
     <div className="rounded-lg border bg-background p-2">
@@ -581,7 +597,7 @@ function ChildItemEditor({
           onChange={(e) =>
             onChange({ ...item, label: e.target.value || undefined })
           }
-          placeholder="标签"
+          placeholder={t('label')}
           value={item.label ?? ''}
         />
         <Button
@@ -599,7 +615,7 @@ function ChildItemEditor({
           onChange={(e) =>
             onChange({ ...item, desc: e.target.value || undefined })
           }
-          placeholder="描述"
+          placeholder={t('desc')}
           value={item.desc ?? ''}
         />
       </div>
@@ -613,9 +629,10 @@ interface RootItemEditorProps {
   item: InfographicItem
   onChange: (item: InfographicItem) => void
   showValue: boolean
+  t: (key: string) => string
 }
 
-function RootItemEditor({ item, onChange, showValue }: RootItemEditorProps) {
+function RootItemEditor({ item, onChange, showValue, t }: RootItemEditorProps) {
   return (
     <div className="flex flex-col gap-2">
       <div className="rounded-lg border bg-muted/30 p-2">
@@ -624,7 +641,7 @@ function RootItemEditor({ item, onChange, showValue }: RootItemEditorProps) {
           onChange={(e) =>
             onChange({ ...item, label: e.target.value || undefined })
           }
-          placeholder="根节点标签"
+          placeholder={t('rootNodeLabel')}
           value={item.label ?? ''}
         />
         <div className="mt-1.5">
@@ -633,7 +650,7 @@ function RootItemEditor({ item, onChange, showValue }: RootItemEditorProps) {
             onChange={(e) =>
               onChange({ ...item, desc: e.target.value || undefined })
             }
-            placeholder="根节点描述"
+            placeholder={t('rootNodeDesc')}
             value={item.desc ?? ''}
           />
         </div>
@@ -641,7 +658,9 @@ function RootItemEditor({ item, onChange, showValue }: RootItemEditorProps) {
         {/* Children */}
         <div className="mt-2 border-t pt-2">
           <div className="mb-1 flex items-center justify-between">
-            <span className="text-muted-foreground text-xs">子节点</span>
+            <span className="text-muted-foreground text-xs">
+              {t('childNodes')}
+            </span>
             <Button
               onClick={() => {
                 onChange({
@@ -679,6 +698,7 @@ function RootItemEditor({ item, onChange, showValue }: RootItemEditorProps) {
                   }}
                   showChildren={true}
                   showValue={showValue}
+                  t={t}
                 />
               )}
             />

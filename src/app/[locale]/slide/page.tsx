@@ -1,6 +1,7 @@
 import { and, desc, eq, ilike } from 'drizzle-orm'
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 import { SlideList } from '@/components/slide/list/slide-list'
 import { db } from '@/db'
 import { slide } from '@/db/schema'
@@ -8,10 +9,12 @@ import { getSession } from '@/lib/auth'
 
 const PAGE_SIZE = 12
 
-export const metadata: Metadata = {
-  title: 'My Slides',
-  description:
-    'View and manage all your slides and infographics created in InfographicAI.',
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('slide')
+  return {
+    title: t('mySlides'),
+    description: t('editInInfographicAI'),
+  }
 }
 
 export default async function SlidePage({

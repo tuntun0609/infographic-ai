@@ -1,8 +1,10 @@
-// 工具名称到中文标题的映射
-export const toolTitles: Record<string, string> = {
-  createInfographic: '创建信息图',
-  editInfographic: '编辑信息图',
-  deleteInfographic: '删除信息图',
+// 工具名称到翻译键的映射
+// 注意：这个文件不再直接包含翻译文本，而是使用翻译键
+// 实际的翻译文本在 locale 文件中
+export const toolTitleKeys: Record<string, string> = {
+  createInfographic: 'createInfographic',
+  editInfographic: 'editInfographic',
+  deleteInfographic: 'deleteInfographic',
 }
 
 // 节流间隔时间（毫秒）

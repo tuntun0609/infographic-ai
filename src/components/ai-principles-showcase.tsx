@@ -2,8 +2,9 @@
 
 import { Infographic } from '@antv/infographic'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useTheme } from 'next-themes'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { CarouselApi } from '@/components/ui/carousel'
 import {
   Carousel,
@@ -17,130 +18,6 @@ interface ShowcaseCase {
   theme: string // Theme description
   slides: string[]
 }
-
-const SHOWCASE_CASES: ShowcaseCase[] = [
-  {
-    name: 'How AI Works',
-    theme: 'From data to intelligent output',
-    slides: [
-      `infographic sequence-pyramid-simple
-data
-  title AI Intelligence
-  sequences
-    - label Data Layer
-      desc Raw data: text, images, audio
-    - label Feature Layer
-      desc Extract key features and patterns
-    - label Model Layer
-      desc Neural networks learn patterns
-    - label Application Layer
-      desc Apply to real scenarios
-  order asc
-theme light
-  palette #667eea,#764ba2,#f093fb,#4facfe`,
-      `infographic chart-pie-donut-pill-badge
-data
-  title AI Applications
-  values
-    - label NLP
-      value 28
-    - label Vision
-      value 25
-    - label Speech
-      value 15
-    - label Recommendations
-      value 18
-    - label Autonomous
-      value 14
-theme light
-  palette #f093fb,#4facfe,#43e97b,#fa709a,#fee140`,
-    ],
-  },
-  {
-    name: 'How to Make a Movie',
-    theme: 'From concept to final film',
-    slides: [
-      `infographic sequence-funnel-simple
-data
-  title Movie Production
-  sequences
-    - label Concept
-      desc Ideas and script concepts
-    - label Development
-      desc Scripts, funding, team
-    - label Production
-      desc Filming and footage
-    - label Post-Production
-      desc Editing, VFX, sound
-    - label Distribution
-      desc Marketing and release
-  order asc
-theme light
-  palette #ef476f,#ffd166,#06d6a0,#118ab2,#073b4c`,
-      `infographic sequence-color-snake-steps-horizontal-icon-line
-data
-  title Production Timeline
-  sequences
-    - label Initiation
-      desc Funding, team assembly
-      icon lucide/flag
-    - label Pre-Production
-      desc Casting, storyboarding
-      icon lucide/clipboard-list
-    - label Photography
-      desc On-set filming
-      icon lucide/camera
-    - label Post-Production
-      desc Editing, VFX
-      icon lucide/scissors
-    - label Distribution
-      desc Marketing, release
-      icon lucide/megaphone
-  order asc
-theme light
-  palette #667eea,#764ba2,#f093fb,#4facfe,#00f2fe`,
-    ],
-  },
-  {
-    name: 'How to Write an Article',
-    theme: 'From topic to final article',
-    slides: [
-      `infographic sequence-circular-simple
-data
-  title Article Writing Cycle
-  sequences
-    - label Brainstorm
-      desc Determine theme, audience
-    - label Gather
-      desc Research, collect examples
-    - label Outline
-      desc Design structure, logic
-    - label Draft
-      desc Write first draft
-    - label Revise
-      desc Polish and refine
-  order asc
-theme light
-  palette #4facfe,#00f2fe,#43e97b,#38f9d7,#667eea`,
-      `infographic list-zigzag-down-compact-card
-data
-  title Core Elements
-  lists
-    - label Compelling Headline
-      desc Sparks reading interest
-    - label Clear Structure
-      desc Logical and organized
-    - label Rich Content
-      desc Novel viewpoints
-    - label Vivid Expression
-      desc Beautiful language
-    - label Deep Thinking
-      desc Unique insights
-theme light
-  palette #76c893,#52b69a,#34a0a4,#168aad,#1a759f`,
-    ],
-  },
-]
 
 interface InfographicSlideProps {
   content: string
@@ -214,11 +91,13 @@ function FloatingToolbar({
   canScrollPrev,
   canScrollNext,
 }: FloatingToolbarProps) {
+  const t = useTranslations('aiPrinciples')
+
   return (
     <div className="flex justify-center">
       <div className="flex items-center gap-2 rounded-full border bg-background px-3 py-1.5 shadow-lg">
         <button
-          aria-label="Previous slide"
+          aria-label={t('previousSlide')}
           className="flex size-8 items-center justify-center rounded-full transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-50"
           disabled={!canScrollPrev}
           onClick={onPrev}
@@ -230,7 +109,7 @@ function FloatingToolbar({
           {Array.from({ length: totalSlides }).map((_, index) => (
             <button
               aria-current={index === selectedIndex}
-              aria-label={`Slide ${index + 1}`}
+              aria-label={`${t('slide')} ${index + 1}`}
               className={`size-2 rounded-full transition-colors ${
                 index === selectedIndex
                   ? 'bg-primary'
@@ -243,7 +122,7 @@ function FloatingToolbar({
           ))}
         </div>
         <button
-          aria-label="Next slide"
+          aria-label={t('nextSlide')}
           className="flex size-8 items-center justify-center rounded-full transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-50"
           disabled={!canScrollNext}
           onClick={onNext}
@@ -257,8 +136,137 @@ function FloatingToolbar({
 }
 
 export function AIPrinciplesShowcase() {
+  const t = useTranslations('aiPrinciples')
   const { resolvedTheme } = useTheme()
   const theme = resolvedTheme === 'dark' ? 'dark' : 'light'
+
+  const SHOWCASE_CASES: ShowcaseCase[] = useMemo(
+    () => [
+      {
+        name: t('howAIWorks'),
+        theme: t('howAIWorksTheme'),
+        slides: [
+          `infographic sequence-pyramid-simple
+data
+  title AI Intelligence
+  sequences
+    - label Data Layer
+      desc Raw data: text, images, audio
+    - label Feature Layer
+      desc Extract key features and patterns
+    - label Model Layer
+      desc Neural networks learn patterns
+    - label Application Layer
+      desc Apply to real scenarios
+  order asc
+theme light
+  palette #667eea,#764ba2,#f093fb,#4facfe`,
+          `infographic chart-pie-donut-pill-badge
+data
+  title AI Applications
+  values
+    - label NLP
+      value 28
+    - label Vision
+      value 25
+    - label Speech
+      value 15
+    - label Recommendations
+      value 18
+    - label Autonomous
+      value 14
+theme light
+  palette #f093fb,#4facfe,#43e97b,#fa709a,#fee140`,
+        ],
+      },
+      {
+        name: t('howToMakeAMovie'),
+        theme: t('howToMakeAMovieTheme'),
+        slides: [
+          `infographic sequence-funnel-simple
+data
+  title Movie Production
+  sequences
+    - label Concept
+      desc Ideas and script concepts
+    - label Development
+      desc Scripts, funding, team
+    - label Production
+      desc Filming and footage
+    - label Post-Production
+      desc Editing, VFX, sound
+    - label Distribution
+      desc Marketing and release
+  order asc
+theme light
+  palette #ef476f,#ffd166,#06d6a0,#118ab2,#073b4c`,
+          `infographic sequence-color-snake-steps-horizontal-icon-line
+data
+  title Production Timeline
+  sequences
+    - label Initiation
+      desc Funding, team assembly
+      icon lucide/flag
+    - label Pre-Production
+      desc Casting, storyboarding
+      icon lucide/clipboard-list
+    - label Photography
+      desc On-set filming
+      icon lucide/camera
+    - label Post-Production
+      desc Editing, VFX
+      icon lucide/scissors
+    - label Distribution
+      desc Marketing, release
+      icon lucide/megaphone
+  order asc
+theme light
+  palette #667eea,#764ba2,#f093fb,#4facfe,#00f2fe`,
+        ],
+      },
+      {
+        name: t('howToWriteAnArticle'),
+        theme: t('howToWriteAnArticleTheme'),
+        slides: [
+          `infographic sequence-circular-simple
+data
+  title Article Writing Cycle
+  sequences
+    - label Brainstorm
+      desc Determine theme, audience
+    - label Gather
+      desc Research, collect examples
+    - label Outline
+      desc Design structure, logic
+    - label Draft
+      desc Write first draft
+    - label Revise
+      desc Polish and refine
+  order asc
+theme light
+  palette #4facfe,#00f2fe,#43e97b,#38f9d7,#667eea`,
+          `infographic list-zigzag-down-compact-card
+data
+  title Core Elements
+  lists
+    - label Compelling Headline
+      desc Sparks reading interest
+    - label Clear Structure
+      desc Logical and organized
+    - label Rich Content
+      desc Novel viewpoints
+    - label Vivid Expression
+      desc Beautiful language
+    - label Deep Thinking
+      desc Unique insights
+theme light
+  palette #76c893,#52b69a,#34a0a4,#168aad,#1a759f`,
+        ],
+      },
+    ],
+    [t]
+  )
+
   const [activeCaseIndex, setActiveCaseIndex] = useState(0)
   const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null)
   const [selectedSlideIndex, setSelectedSlideIndex] = useState(0)

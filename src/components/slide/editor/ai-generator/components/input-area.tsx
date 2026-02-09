@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import {
   PromptInput,
   PromptInputBody,
@@ -13,29 +14,31 @@ interface InputAreaProps {
   onSubmit: (message: PromptInputMessage) => void
 }
 
-// 获取输入框的 placeholder 文本
-function getPlaceholder(status: string) {
-  if (status === 'error') {
-    return '发生错误，可以重新发送消息...'
-  }
-  return '描述你想要对信息图进行的操作...'
-}
-
-// 将 status 转换为 PromptInputSubmit 需要的格式
-function getSubmitStatus(status: string) {
-  if (status === 'streaming') {
-    return 'streaming'
-  }
-  if (status === 'submitted') {
-    return 'submitted'
-  }
-  if (status === 'error') {
-    return 'error'
-  }
-  return undefined
-}
-
 export function InputArea({ status, isLoading, onSubmit }: InputAreaProps) {
+  const t = useTranslations('aiGenerator')
+
+  // 获取输入框的 placeholder 文本
+  function getPlaceholder(status: string) {
+    if (status === 'error') {
+      return t('errorPlaceholder')
+    }
+    return t('placeholder')
+  }
+
+  // 将 status 转换为 PromptInputSubmit 需要的格式
+  function getSubmitStatus(status: string) {
+    if (status === 'streaming') {
+      return 'streaming'
+    }
+    if (status === 'submitted') {
+      return 'submitted'
+    }
+    if (status === 'error') {
+      return 'error'
+    }
+    return undefined
+  }
+
   return (
     <div className="border-t bg-background p-3 sm:p-4">
       <PromptInput onSubmit={onSubmit}>

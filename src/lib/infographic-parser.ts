@@ -634,7 +634,7 @@ export function getDataFieldForTemplate(template: string): string {
  */
 export const TEMPLATE_GROUPS = [
   {
-    label: '列表 (List)',
+    labelKey: 'templateGroup.list',
     templates: [
       'list-row-horizontal-icon-arrow',
       'list-column-done-list',
@@ -651,7 +651,7 @@ export const TEMPLATE_GROUPS = [
     ],
   },
   {
-    label: '序列 (Sequence)',
+    labelKey: 'templateGroup.sequence',
     templates: [
       'sequence-timeline-rounded-rect-node',
       'sequence-timeline-simple',
@@ -677,7 +677,7 @@ export const TEMPLATE_GROUPS = [
     ],
   },
   {
-    label: '图表 (Chart)',
+    labelKey: 'templateGroup.chart',
     templates: [
       'chart-bar-plain-text',
       'chart-column-simple',
@@ -690,7 +690,7 @@ export const TEMPLATE_GROUPS = [
     ],
   },
   {
-    label: '对比 (Compare)',
+    labelKey: 'templateGroup.compare',
     templates: [
       'compare-binary-horizontal-badge-card-arrow',
       'compare-binary-horizontal-simple-fold',
@@ -703,7 +703,7 @@ export const TEMPLATE_GROUPS = [
     ],
   },
   {
-    label: '层级 (Hierarchy)',
+    labelKey: 'templateGroup.hierarchy',
     templates: [
       'hierarchy-mindmap-branch-gradient-capsule-item',
       'hierarchy-mindmap-level-gradient-compact-card',
@@ -714,7 +714,7 @@ export const TEMPLATE_GROUPS = [
     ],
   },
   {
-    label: '关系 (Relation)',
+    labelKey: 'templateGroup.relation',
     templates: [
       'relation-dagre-flow-tb-animated-badge-card',
       'relation-dagre-flow-tb-animated-simple-circle-node',

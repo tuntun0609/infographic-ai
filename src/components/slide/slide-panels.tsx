@@ -2,6 +2,7 @@
 
 import { useAtom, useSetAtom } from 'jotai'
 import { useSearchParams } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { useCallback, useEffect, useRef, useState, useTransition } from 'react'
 import type { Layout } from 'react-resizable-panels'
 import { toast } from 'sonner'
@@ -57,6 +58,8 @@ export function SlidePanels({
     }
   }, [slide, titleValue, setSlide])
 
+  const t = useTranslations('slide')
+
   const handleSave = useCallback(() => {
     if (!slide) {
       return
@@ -67,13 +70,13 @@ export function SlidePanels({
           title: slide.title,
           infographics: slide.infographics,
         })
-        toast.success('保存成功')
+        toast.success(t('saveSuccess'))
       } catch (error) {
-        toast.error('保存失败')
+        toast.error(t('saveFailed'))
         console.error('Failed to save slide:', error)
       }
     })
-  }, [slide, slideId])
+  }, [slide, slideId, t])
 
   // 初始化 slide 数据 - 只在 slideId 或 initialSlideData 变化时运行
   useEffect(() => {

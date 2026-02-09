@@ -1,6 +1,7 @@
 'use client'
 
 import { MoreHorizontal, Trash2, Type } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useState, useTransition } from 'react'
 import { toast } from 'sonner'
 import { deleteSlide, updateSlide } from '@/actions/slide'
@@ -39,6 +40,7 @@ interface SlideCardMenuProps {
 }
 
 export function SlideCardMenu({ slide }: SlideCardMenuProps) {
+  const t = useTranslations('slide')
   const [isRenameOpen, setIsRenameOpen] = useState(false)
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [newName, setNewName] = useState(slide.title)
@@ -54,9 +56,9 @@ export function SlideCardMenu({ slide }: SlideCardMenuProps) {
       try {
         await updateSlide(slide.id, { title: newName })
         setIsRenameOpen(false)
-        toast.success('重命名成功')
+        toast.success(t('renameSuccess'))
       } catch {
-        toast.error('重命名失败')
+        toast.error(t('renameFailed'))
       }
     })
   }
@@ -66,9 +68,9 @@ export function SlideCardMenu({ slide }: SlideCardMenuProps) {
       try {
         await deleteSlide(slide.id)
         setIsDeleteOpen(false)
-        toast.success('删除成功')
+        toast.success(t('deleteSuccess'))
       } catch {
-        toast.error('删除失败')
+        toast.error(t('deleteFailed'))
       }
     })
   }
@@ -83,7 +85,7 @@ export function SlideCardMenu({ slide }: SlideCardMenuProps) {
           <DropdownMenuContent align="end" className="w-40">
             <DropdownMenuItem onClick={() => setIsRenameOpen(true)}>
               <Type className="mr-2 size-4" />
-              重命名
+              {t('rename')}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
@@ -91,7 +93,7 @@ export function SlideCardMenu({ slide }: SlideCardMenuProps) {
               onClick={() => setIsDeleteOpen(true)}
             >
               <Trash2 className="mr-2 size-4" />
-              删除
+              {t('delete')}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -100,7 +102,7 @@ export function SlideCardMenu({ slide }: SlideCardMenuProps) {
       <Dialog onOpenChange={setIsRenameOpen} open={isRenameOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>重命名演示文稿</DialogTitle>
+            <DialogTitle>{t('renameSlide')}</DialogTitle>
           </DialogHeader>
           <div className="py-4">
             <Input
@@ -112,16 +114,16 @@ export function SlideCardMenu({ slide }: SlideCardMenuProps) {
                   handleRename()
                 }
               }}
-              placeholder="输入新的名称"
+              placeholder={t('enterNewName')}
               value={newName}
             />
           </div>
           <DialogFooter>
             <Button onClick={() => setIsRenameOpen(false)} variant="outline">
-              取消
+              {t('cancel')}
             </Button>
             <Button disabled={isPending} onClick={handleRename}>
-              保存
+              {t('save')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -130,19 +132,19 @@ export function SlideCardMenu({ slide }: SlideCardMenuProps) {
       <AlertDialog onOpenChange={setIsDeleteOpen} open={isDeleteOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>确认删除？</AlertDialogTitle>
+            <AlertDialogTitle>{t('confirmDelete')}</AlertDialogTitle>
             <AlertDialogDescription>
-              此操作无法撤销。这将永久删除 "{slide.title}" 及其所有内容。
+              {t('deleteWarning', { title: slide.title })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>取消</AlertDialogCancel>
+            <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
               disabled={isPending}
               onClick={handleDelete}
             >
-              删除
+              {t('delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

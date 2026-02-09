@@ -2,6 +2,7 @@
 
 import { PanelRightClose } from 'lucide-react'
 import { usePathname, useSearchParams } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { AIGenerator } from './editor/ai-generator'
@@ -22,6 +23,7 @@ export function EditorTabs({
 }: EditorTabsProps) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const t = useTranslations('slideEditor')
 
   const handleTabChange = (value: string) => {
     const nextTab = value === 'ai' ? 'ai' : 'editor'
@@ -52,13 +54,13 @@ export function EditorTabs({
             className="h-7 rounded-md px-2.5 text-xs data-active:bg-muted data-active:shadow-none"
             value="editor"
           >
-            Editor
+            {t('editor')}
           </TabsTrigger>
           <TabsTrigger
             className="h-7 rounded-md px-2.5 text-xs data-active:bg-muted data-active:shadow-none"
             value="ai"
           >
-            AI
+            {t('ai')}
           </TabsTrigger>
         </TabsList>
         <Button

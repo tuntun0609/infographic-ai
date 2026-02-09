@@ -1,6 +1,7 @@
 'use client'
 
 import { Eye, Pencil, Sparkles } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
 
 interface MobileTabBarProps {
@@ -8,13 +9,15 @@ interface MobileTabBarProps {
   onViewChange: (view: 'viewer' | 'editor' | 'ai') => void
 }
 
-const mobileTabItems = [
-  { key: 'viewer' as const, icon: Eye, label: '预览' },
-  { key: 'editor' as const, icon: Pencil, label: '编辑' },
-  { key: 'ai' as const, icon: Sparkles, label: 'AI' },
-]
-
 export function MobileTabBar({ currentView, onViewChange }: MobileTabBarProps) {
+  const t = useTranslations('slideEditor')
+
+  const mobileTabItems = [
+    { key: 'viewer' as const, icon: Eye, label: t('preview') },
+    { key: 'editor' as const, icon: Pencil, label: t('edit') },
+    { key: 'ai' as const, icon: Sparkles, label: t('ai') },
+  ]
+
   return (
     <div className="flex shrink-0 items-center justify-around border-t bg-background/95 backdrop-blur-sm">
       {mobileTabItems.map(({ key, icon: Icon, label }) => (

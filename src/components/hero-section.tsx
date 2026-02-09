@@ -1,3 +1,4 @@
+'use client'
 import {
   ArrowRight,
   BarChart3,
@@ -13,6 +14,7 @@ import {
 import type { Variants } from 'motion'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { AnimatedGroup } from '@/components/ui/animated-group'
 import { Button } from '@/components/ui/button'
 import { AIPrinciplesShowcase } from './ai-principles-showcase'
@@ -41,58 +43,53 @@ const transitionVariants = {
   },
 }
 
-const features = [
-  {
-    icon: Zap,
-    title: 'Lightning Fast',
-    description:
-      'Generate professional infographics in seconds. From data to visual, instantly.',
-  },
-  {
-    icon: Eye,
-    title: 'Real-time Editing',
-    description:
-      'See changes instantly. Drag, resize, edit—zero delay, seamless workflow.',
-  },
-  {
-    icon: Palette,
-    title: 'Beautiful Design',
-    description:
-      'Auto-optimized colors, typography, and layouts. Publication-ready quality.',
-  },
-  {
-    icon: Wand2,
-    title: 'AI-Powered',
-    description:
-      'Smart suggestions for charts, layouts, and styles. Describe your vision in plain English.',
-  },
-]
-
-const testimonials = [
-  {
-    quote:
-      'This tool saved me hours on my last quarterly presentation. The AI understands context surrounding each.',
-    name: 'Sarah Jenkins',
-    title: 'Product Designer at Stripe',
-    avatar: 'SJ',
-  },
-  {
-    quote:
-      'Finally, a design tool that actually helps me visualize complex data without needing a PhD in statistics.',
-    name: 'Mike T.',
-    title: 'Data Analyst at Google',
-    avatar: 'MT',
-  },
-  {
-    quote:
-      'The drag and drop interface combined with AI suggestions makes this the fastest tool at my arsenal.',
-    name: 'Elena Rodriguez',
-    title: 'Marketing Dir.',
-    avatar: 'ER',
-  },
-]
-
 export default function HeroSection() {
+  const t = useTranslations('hero')
+
+  const features = [
+    {
+      icon: Zap,
+      title: t('lightningFast'),
+      description: t('lightningFastDesc'),
+    },
+    {
+      icon: Eye,
+      title: t('realtimeEditing'),
+      description: t('realtimeEditingDesc'),
+    },
+    {
+      icon: Palette,
+      title: t('beautifulDesign'),
+      description: t('beautifulDesignDesc'),
+    },
+    {
+      icon: Wand2,
+      title: t('aiPowered'),
+      description: t('aiPoweredDesc'),
+    },
+  ]
+
+  const testimonials = [
+    {
+      quote: t('testimonial1.quote'),
+      name: t('testimonial1.name'),
+      title: t('testimonial1.title'),
+      avatar: 'SJ',
+    },
+    {
+      quote: t('testimonial2.quote'),
+      name: t('testimonial2.name'),
+      title: t('testimonial2.title'),
+      avatar: 'MT',
+    },
+    {
+      quote: t('testimonial3.quote'),
+      name: t('testimonial3.name'),
+      title: t('testimonial3.title'),
+      avatar: 'ER',
+    },
+  ]
+
   return (
     <>
       <HeroHeader />
@@ -115,7 +112,7 @@ export default function HeroSection() {
                 <AnimatedGroup variants={transitionVariants as Variants}>
                   <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 font-medium text-primary text-sm">
                     <Sparkles className="size-4" />
-                    <span>Start Creating Free</span>
+                    <span>{t('startCreatingFree')}</span>
                   </div>
                 </AnimatedGroup>
 
@@ -135,14 +132,9 @@ export default function HeroSection() {
                   }
                 >
                   <h1 className="mt-8 font-bold text-5xl text-foreground tracking-tight md:text-6xl lg:text-7xl">
-                    Design
+                    {t('designInfographics')}
                     <br />
-                    Infographics
-                    <br />
-                    with{' '}
-                    <span className="bg-linear-to-r from-purple-600 to-violet-400 bg-clip-text text-transparent dark:from-purple-400 dark:to-violet-300">
-                      Intelligent AI
-                    </span>
+                    {t('withIntelligentAI')}
                   </h1>
                 </AnimatedGroup>
 
@@ -159,9 +151,7 @@ export default function HeroSection() {
                   }
                 >
                   <p className="mt-6 max-w-lg text-lg text-muted-foreground leading-relaxed">
-                    Transform raw data into stunning visual art instantly.
-                    AI-powered infographic engine that gives you precise control
-                    over every pixel.
+                    {t('transformData')}
                   </p>
                 </AnimatedGroup>
 
@@ -189,18 +179,18 @@ export default function HeroSection() {
                     size="lg"
                   >
                     <Sparkles className="mr-2 size-4" />
-                    <span>Start Creating Free</span>
+                    <span>{t('startCreatingFree')}</span>
                   </Button>
                   <Button
                     className="rounded-xl px-6 text-base"
                     key="cta-demo"
                     nativeButton={false}
-                    render={<Link href="/slide/explore" />}
+                    render={<Link href="#showcase" />}
                     size="lg"
                     variant="outline"
                   >
                     <Play className="mr-2 size-4" />
-                    <span>View Demo</span>
+                    <span>{t('viewDemo')}</span>
                   </Button>
                 </AnimatedGroup>
 
@@ -283,10 +273,12 @@ export default function HeroSection() {
                     <div className="flex items-center gap-2">
                       <BarChart3 className="size-4 text-primary" />
                       <span className="text-muted-foreground text-xs">
-                        Total Views
+                        {t('totalViews')}
                       </span>
                     </div>
-                    <div className="mt-1 font-bold text-xl">1.2M Points</div>
+                    <div className="mt-1 font-bold text-xl">
+                      {t('totalViewsValue')}
+                    </div>
                     <div className="mt-2 flex h-6 items-end gap-1">
                       {[40, 65, 45, 80, 60, 90, 70].map((h, i) => (
                         <div
@@ -305,10 +297,10 @@ export default function HeroSection() {
                     </div>
                     <div>
                       <div className="font-semibold text-sm">
-                        Generation Complete
+                        {t('generationComplete')}
                       </div>
                       <div className="text-muted-foreground text-xs">
-                        Your infographic is ready
+                        {t('yourInfographicIsReady')}
                       </div>
                     </div>
                   </div>
@@ -323,11 +315,10 @@ export default function HeroSection() {
           <div className="mx-auto max-w-7xl px-6">
             <div className="text-center">
               <h2 className="font-bold text-3xl tracking-tight md:text-4xl">
-                Powerful Features
+                {t('powerfulFeatures')}
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-                Fast, real-time, beautiful, and intelligent—everything you need
-                to create stunning infographics.
+                {t('featuresDesc')}
               </p>
             </div>
             <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -360,15 +351,13 @@ export default function HeroSection() {
               {/* Left Content */}
               <div>
                 <h2 className="font-bold text-3xl tracking-tight md:text-4xl">
-                  Powerful Slide Editor
+                  {t('powerfulSlideEditor')}
                 </h2>
                 <p className="mt-2 text-lg text-muted-foreground italic">
-                  Create stunning presentations with ease.
+                  {t('powerfulSlideEditorDesc')}
                 </p>
                 <p className="mt-6 text-muted-foreground leading-relaxed">
-                  A feature-rich editor designed for creating professional
-                  presentations. Combine AI-powered content generation with
-                  intuitive editing tools to bring your ideas to life.
+                  {t('powerfulSlideEditorDetail')}
                 </p>
                 <div className="mt-8 space-y-5">
                   <div className="flex gap-4">
@@ -376,10 +365,11 @@ export default function HeroSection() {
                       <Check className="size-3.5 text-green-600 dark:text-green-400" />
                     </div>
                     <div>
-                      <div className="font-semibold">AI-Powered Content</div>
+                      <div className="font-semibold">
+                        {t('aiPoweredContent')}
+                      </div>
                       <div className="mt-0.5 text-muted-foreground text-sm">
-                        Generate slide content, outlines, and layouts
-                        automatically with AI assistance.
+                        {t('aiPoweredContentDesc')}
                       </div>
                     </div>
                   </div>
@@ -388,10 +378,11 @@ export default function HeroSection() {
                       <Check className="size-3.5 text-green-600 dark:text-green-400" />
                     </div>
                     <div>
-                      <div className="font-semibold">Rich Editing Tools</div>
+                      <div className="font-semibold">
+                        {t('richEditingTools')}
+                      </div>
                       <div className="mt-0.5 text-muted-foreground text-sm">
-                        Customize text, images, and layouts with an intuitive
-                        drag-and-drop interface.
+                        {t('richEditingToolsDesc')}
                       </div>
                     </div>
                   </div>
@@ -400,10 +391,9 @@ export default function HeroSection() {
                       <Check className="size-3.5 text-green-600 dark:text-green-400" />
                     </div>
                     <div>
-                      <div className="font-semibold">Export Anywhere</div>
+                      <div className="font-semibold">{t('exportAnywhere')}</div>
                       <div className="mt-0.5 text-muted-foreground text-sm">
-                        Export your presentations to PPT, PDF, or share them
-                        directly with a link.
+                        {t('exportAnywhereDesc')}
                       </div>
                     </div>
                   </div>
@@ -412,7 +402,7 @@ export default function HeroSection() {
                   className="mt-8 inline-flex items-center gap-1 font-medium text-primary text-sm hover:underline"
                   href="/slide"
                 >
-                  Try the Editor
+                  {t('tryTheEditor')}
                   <ArrowRight className="size-4" />
                 </Link>
               </div>
@@ -434,11 +424,11 @@ export default function HeroSection() {
         </section>
 
         {/* ===== AI Principles Showcase Section ===== */}
-        <section className="py-14 md:py-18" id="ai-principles">
+        <section className="py-14 md:py-18" id="showcase">
           <div className="mx-auto max-w-7xl px-6">
             <div className="text-center">
               <h2 className="font-bold text-3xl tracking-tight md:text-4xl">
-                Showcase
+                {t('showcase')}
               </h2>
             </div>
             <div className="mt-12">
@@ -453,10 +443,10 @@ export default function HeroSection() {
             <div className="flex items-end justify-between">
               <div>
                 <h2 className="font-bold text-3xl tracking-tight md:text-4xl">
-                  Loved by Creators
+                  {t('lovedByCreators')}
                 </h2>
                 <p className="mt-2 text-muted-foreground">
-                  Join thousands of designers streamlining their workflow.
+                  {t('lovedByCreatorsDesc')}
                 </p>
               </div>
               <div className="hidden items-center gap-2 md:flex">
@@ -516,11 +506,10 @@ export default function HeroSection() {
         <section className="px-6 pb-20 md:pb-32">
           <div className="mx-auto max-w-4xl rounded-3xl bg-linear-to-br from-primary/5 via-purple-50 to-violet-50 px-8 py-16 text-center md:px-16 dark:from-primary/10 dark:via-purple-950/20 dark:to-violet-950/20">
             <h2 className="font-bold text-3xl tracking-tight md:text-4xl">
-              Ready to visualize your data?
+              {t('readyToVisualize')}
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-              Join over 1000+ users creating professional infographics in
-              minutes, not hours.
+              {t('readyToVisualizeDesc')}
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Button
@@ -529,7 +518,7 @@ export default function HeroSection() {
                 render={<Link href="/slide" />}
                 size="lg"
               >
-                Get Started for Free
+                {t('getStartedForFree')}
               </Button>
             </div>
           </div>

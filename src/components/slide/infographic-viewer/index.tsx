@@ -2,6 +2,7 @@
 
 import { useAtomValue, useSetAtom } from 'jotai'
 import { nanoid } from 'nanoid'
+import { useTranslations } from 'next-intl'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { exportToPptx } from '@/lib/export-pptx'
@@ -24,6 +25,7 @@ interface InfographicViewerProps {
 }
 
 export function InfographicViewer({ slideId }: InfographicViewerProps) {
+  const t = useTranslations('slideViewer')
   const selectedInfographic = useAtomValue(selectedInfographicAtom)
   const slide = useAtomValue(slideAtom)
   const selectedInfographicId = useAtomValue(selectedInfographicIdAtom)
@@ -138,7 +140,7 @@ export function InfographicViewer({ slideId }: InfographicViewerProps) {
   const handleCopyAsPng = useCallback(async () => {
     const infographicInstance = infographicRendererRef.current?.getInstance()
     if (!infographicInstance) {
-      toast.error('无法获取信息图实例')
+      toast.error(t('cannotGetInstance'))
       return
     }
 
@@ -161,21 +163,21 @@ export function InfographicViewer({ slideId }: InfographicViewerProps) {
         }),
       ])
 
-      toast.success('已复制为 PNG')
+      toast.success(t('copySuccess'))
     } catch (error) {
       console.error('Failed to copy as PNG:', error)
-      toast.error('复制失败')
+      toast.error(t('copyFailed'))
     } finally {
       setIsCopying(false)
     }
-  }, [])
+  }, [t])
 
   // 工具栏操作函数 - 下载信息图
   const handleDownload = useCallback(
     async (format: 'svg' | 'png') => {
       const infographicInstance = infographicRendererRef.current?.getInstance()
       if (!infographicInstance) {
-        toast.error('无法获取信息图实例')
+        toast.error(t('cannotGetInstance'))
         return
       }
 
@@ -215,13 +217,13 @@ export function InfographicViewer({ slideId }: InfographicViewerProps) {
         document.body.removeChild(downloadLink)
         URL.revokeObjectURL(downloadUrl)
 
-        toast.success(`已下载为 ${format.toUpperCase()}`)
+        toast.success(t('downloadSuccess', { format: format.toUpperCase() }))
       } catch (error) {
         console.error(`Failed to download as ${format}:`, error)
-        toast.error('下载失败')
+        toast.error(t('downloadFailed'))
       }
     },
-    [slideId]
+    [slideId, t]
   )
 
   // 导出为 PPT
@@ -231,11 +233,11 @@ export function InfographicViewer({ slideId }: InfographicViewerProps) {
     }
 
     toast.promise(exportToPptx(slide.infographics, slide.title || 'slide'), {
-      loading: '正在导出 PPT...',
-      success: '已导出为 PPT',
-      error: '导出 PPT 失败',
+      loading: t('exportPptLoading'),
+      success: t('exportPptSuccess'),
+      error: t('exportPptFailed'),
     })
-  }, [slide])
+  }, [slide, t])
 
   const handleFullscreen = useCallback(() => {
     if (!wrapperRef.current) {

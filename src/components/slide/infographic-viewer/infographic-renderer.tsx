@@ -1,6 +1,7 @@
 'use client'
 
 import { Infographic } from '@antv/infographic'
+import { useTranslations } from 'next-intl'
 import { useTheme } from 'next-themes'
 import {
   forwardRef,
@@ -24,6 +25,7 @@ export const InfographicRenderer = forwardRef<
   InfographicRendererRef,
   InfographicRendererProps
 >(function InfographicRenderer({ content, isEmptyContent, containerRef }, ref) {
+  const t = useTranslations('slideViewer')
   const infographicInstanceRef = useRef<Infographic | null>(null)
   const previousThemeRef = useRef<'dark' | 'light' | null>(null)
   const { resolvedTheme } = useTheme()
@@ -85,17 +87,17 @@ export const InfographicRenderer = forwardRef<
         // 显示错误信息
         if (containerRef.current) {
           const errorMessage =
-            error instanceof Error ? error.message : '未知错误'
+            error instanceof Error ? error.message : t('unknownError')
           containerRef.current.innerHTML = `
           <div style="padding: 20px; text-align: center; color: #ef4444;">
-            <p style="font-weight: 500; margin-bottom: 8px;">渲染错误</p>
+            <p style="font-weight: 500; margin-bottom: 8px;">${t('renderError')}</p>
             <p style="font-size: 12px; color: #6b7280;">${errorMessage}</p>
           </div>
         `
         }
       }
     },
-    [containerRef]
+    [containerRef, t]
   )
 
   // 在内容或主题变化时渲染或更新

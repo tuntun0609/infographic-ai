@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import {
   Tool,
   ToolContent,
@@ -5,7 +6,7 @@ import {
   ToolInput,
   ToolOutput,
 } from '@/components/ai-elements/tool'
-import { toolTitles } from '../constants'
+import { toolTitleKeys } from '../constants'
 import type { ChatMessage, ToolState, ToolType } from '../types'
 
 interface ToolPartProps {
@@ -13,6 +14,8 @@ interface ToolPartProps {
 }
 
 export function ToolPart({ part }: ToolPartProps) {
+  const t = useTranslations('aiGenerator')
+
   // 检查是否是工具调用相关的 part
   if (!part.type.startsWith('tool-')) {
     return null
@@ -29,11 +32,15 @@ export function ToolPart({ part }: ToolPartProps) {
     errorText?: string
   }
 
+  // 获取工具标题的翻译键
+  const titleKey = toolTitleKeys[toolName]
+  const title = titleKey ? t(titleKey) : toolName
+
   return (
     <Tool key={toolPart.toolCallId}>
       <ToolHeader
         state={toolPart.state as ToolState}
-        title={toolTitles[toolName] || toolName}
+        title={title}
         type={part.type as ToolType}
       />
       <ToolContent>

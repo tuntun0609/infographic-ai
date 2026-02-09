@@ -1,4 +1,5 @@
 import { isReasoningUIPart } from 'ai'
+import { useTranslations } from 'next-intl'
 import {
   Conversation,
   ConversationContent,
@@ -34,6 +35,8 @@ export function MessageList({
   isLoading,
   error,
 }: MessageListProps) {
+  const t = useTranslations('aiGenerator')
+
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
       {error && (
@@ -48,8 +51,8 @@ export function MessageList({
         <ConversationContent className="p-4">
           {messages.length === 0 && !isLoading ? (
             <ConversationEmptyState
-              description="描述你想要对信息图进行的操作，AI 可以帮你创建、编辑或删除信息图"
-              title="AI 信息图助手"
+              description={t('description')}
+              title={t('title')}
             />
           ) : (
             messages.map((message, index) => {
@@ -126,7 +129,7 @@ export function MessageList({
             <div className="flex items-center justify-center py-8">
               <Loader className="text-muted-foreground" size={16} />
               <span className="ml-2 text-muted-foreground text-sm">
-                AI 正在生成中...
+                {t('generating')}
               </span>
             </div>
           )}
