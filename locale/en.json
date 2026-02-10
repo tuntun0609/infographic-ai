@@ -109,7 +109,15 @@
     "publishSuccess": "Published successfully",
     "unpublishSuccess": "Unpublished successfully",
     "copyLink": "Copy Link",
-    "linkCopied": "Link copied"
+    "linkCopied": "Link copied",
+    "viewCard": "Card View",
+    "viewList": "List View",
+    "sortBy": "Sort",
+    "sortUpdatedAt": "Last Modified",
+    "sortCreatedAt": "Created Time",
+    "sortTitleAsc": "Title A-Z",
+    "sortTitleDesc": "Title Z-A",
+    "pages": "pages"
   },
   "slideViewer": {
     "previous": "Previous",

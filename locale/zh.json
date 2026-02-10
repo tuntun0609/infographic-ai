@@ -109,7 +109,15 @@
     "publishSuccess": "发布成功",
     "unpublishSuccess": "已取消发布",
     "copyLink": "复制链接",
-    "linkCopied": "链接已复制"
+    "linkCopied": "链接已复制",
+    "viewCard": "卡片视图",
+    "viewList": "列表视图",
+    "sortBy": "排序",
+    "sortUpdatedAt": "最近修改",
+    "sortCreatedAt": "创建时间",
+    "sortTitleAsc": "标题 A-Z",
+    "sortTitleDesc": "标题 Z-A",
+    "pages": "页"
   },
   "slideViewer": {
     "previous": "上一个",

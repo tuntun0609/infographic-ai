@@ -37,9 +37,10 @@ type Slide = typeof slide.$inferSelect
 
 interface SlideCardMenuProps {
   slide: Slide
+  className?: string
 }
 
-export function SlideCardMenu({ slide }: SlideCardMenuProps) {
+export function SlideCardMenu({ slide, className }: SlideCardMenuProps) {
   const t = useTranslations('slide')
   const [isRenameOpen, setIsRenameOpen] = useState(false)
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
@@ -77,7 +78,12 @@ export function SlideCardMenu({ slide }: SlideCardMenuProps) {
 
   return (
     <>
-      <div className="absolute top-3 right-3 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+      <div
+        className={
+          className ??
+          'absolute top-3 right-3 opacity-0 transition-opacity duration-200 group-hover:opacity-100'
+        }
+      >
         <DropdownMenu>
           <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-full bg-background/80 backdrop-blur-sm transition-colors hover:bg-background">
             <MoreHorizontal className="size-4" />

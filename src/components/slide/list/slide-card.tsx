@@ -118,7 +118,7 @@ export function SlideCard({ slide }: SlideCardProps) {
         </div>
         <div className="flex items-center justify-between text-muted-foreground text-xs">
           <span>
-            {slide.infographics?.length || 0} {locale === 'zh' ? '页' : 'pages'}
+            {slide.infographics?.length || 0} {t('pages')}
           </span>
           <span className="text-[10px] sm:text-xs">
             {formatDistanceToNow(slide.updatedAt || slide.createdAt, {

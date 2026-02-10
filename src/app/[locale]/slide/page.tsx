@@ -1,4 +1,4 @@
-import { and, desc, eq, ilike } from 'drizzle-orm'
+import { and, asc, desc, eq, ilike } from 'drizzle-orm'
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
@@ -20,7 +20,12 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function SlidePage({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string; search?: string }>
+  searchParams: Promise<{
+    page?: string
+    search?: string
+    sort?: string
+    view?: string
+  }>
 }) {
   const session = await getSession()
 
@@ -33,6 +38,8 @@ export default async function SlidePage({
   const currentPage = page > 0 ? page : 1
   const offset = (currentPage - 1) * PAGE_SIZE
   const searchQuery = params.search?.trim() || ''
+  const sort = params.sort || 'updatedAt'
+  const view = params.view || 'card'
 
   // 构建查询条件
   const whereClause = searchQuery
@@ -42,6 +49,20 @@ export default async function SlidePage({
       )
     : eq(slide.userId, session.user.id)
 
+  // 构建排序条件
+  const orderByClause = (() => {
+    switch (sort) {
+      case 'createdAt':
+        return desc(slide.createdAt)
+      case 'titleAsc':
+        return asc(slide.title)
+      case 'titleDesc':
+        return desc(slide.title)
+      default:
+        return desc(slide.updatedAt)
+    }
+  })()
+
   // 获取当前用户的 slides 总数（带搜索条件）
   const totalCount = await db.$count(slide, whereClause)
 
@@ -50,7 +71,7 @@ export default async function SlidePage({
     .select()
     .from(slide)
     .where(whereClause)
-    .orderBy(desc(slide.updatedAt))
+    .orderBy(orderByClause)
     .limit(PAGE_SIZE)
     .offset(offset)
 
@@ -61,8 +82,10 @@ export default async function SlidePage({
       <SlideList
         currentPage={currentPage}
         slides={slides}
+        sort={sort}
         totalCount={totalCount}
         totalPages={totalPages}
+        view={view}
       />
     </div>
   )
