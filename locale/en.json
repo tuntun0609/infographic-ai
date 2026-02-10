@@ -102,7 +102,14 @@
       "title": "Start Creating",
       "description": "Create a new presentation and start your amazing presentation.",
       "createPresentation": "New Presentation"
-    }
+    },
+    "publish": "Publish",
+    "unpublish": "Unpublish",
+    "published": "Published",
+    "publishSuccess": "Published successfully",
+    "unpublishSuccess": "Unpublished successfully",
+    "copyLink": "Copy Link",
+    "linkCopied": "Link copied"
   },
   "slideViewer": {
     "previous": "Previous",
@@ -246,6 +253,12 @@
     "description": "Explore more features coming soon.",
     "comingSoon": "Coming Soon",
     "workingOnSomething": "We're working on something exciting. Stay tuned!"
+  },
+  "preview": {
+    "title": "Preview",
+    "slideNotFound": "Slide not found or not published",
+    "page": "Page",
+    "createdBy": "Created with InfographicAI"
   },
   "aiPrinciples": {
     "howAIWorks": "How AI Works",

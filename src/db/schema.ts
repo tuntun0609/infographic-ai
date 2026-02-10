@@ -164,6 +164,7 @@ export const slide = pgTable(
       .references(() => user.id, { onDelete: 'cascade' }),
     title: text('title').notNull(),
     infographics: jsonb('infographics').$type<Infographic[]>().notNull(), // 存储所有信息图数据的 JSON 数组
+    published: boolean('published').default(false).notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at')
       .defaultNow()

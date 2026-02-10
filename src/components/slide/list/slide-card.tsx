@@ -3,10 +3,12 @@
 import { Infographic } from '@antv/infographic'
 import { formatDistanceToNow } from 'date-fns'
 import { enUS, zhCN } from 'date-fns/locale'
+import { Globe } from 'lucide-react'
 import { motion } from 'motion/react'
 import Image from 'next/image'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useRef } from 'react'
+import { Badge } from '@/components/ui/badge'
 import type { slide } from '@/db/schema'
 import { Link } from '@/i18n/navigation'
 import { SlideCardMenu } from './slide-card-menu'
@@ -61,6 +63,7 @@ function InfographicPreview({ content }: { content: string }) {
 
 export function SlideCard({ slide }: SlideCardProps) {
   const locale = useLocale()
+  const t = useTranslations('slide')
   const firstInfographic = slide.infographics?.[0]
   const hasInfographic = firstInfographic?.content?.trim()
   const dateLocale = locale === 'zh' ? zhCN : enUS
@@ -96,13 +99,22 @@ export function SlideCard({ slide }: SlideCardProps) {
       <SlideCardMenu slide={slide} />
 
       <div className="flex flex-col gap-1 border-t bg-background p-3 sm:p-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-2">
           <h3
             className="truncate font-medium text-xs sm:text-sm"
             title={slide.title}
           >
             {slide.title}
           </h3>
+          {slide.published && (
+            <Badge
+              className="shrink-0 gap-1 bg-green-500/10 text-[10px] text-green-600 dark:text-green-400"
+              variant="secondary"
+            >
+              <Globe className="h-2.5 w-2.5" />
+              {t('published')}
+            </Badge>
+          )}
         </div>
         <div className="flex items-center justify-between text-muted-foreground text-xs">
           <span>

@@ -19,6 +19,7 @@ interface MobileSlidePanelsProps {
   onTitleEdit: (editing: boolean) => void
   onTitleSubmit: () => void
   onSave: () => void
+  onPublishChange?: (published: boolean) => void
 }
 
 export function MobileSlidePanels({
@@ -31,6 +32,7 @@ export function MobileSlidePanels({
   onTitleEdit,
   onTitleSubmit,
   onSave,
+  onPublishChange,
 }: MobileSlidePanelsProps) {
   const [mobileView, setMobileView] = useState<'viewer' | 'editor' | 'ai'>(
     'viewer'
@@ -43,6 +45,7 @@ export function MobileSlidePanels({
         isEditingTitle={isEditingTitle}
         isMobile
         isPending={isPending}
+        onPublishChange={onPublishChange}
         onSave={onSave}
         onTitleChange={onTitleChange}
         onTitleEdit={onTitleEdit}

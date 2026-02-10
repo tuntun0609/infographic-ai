@@ -1,6 +1,6 @@
 'use server'
 
-import { eq } from 'drizzle-orm'
+import { and, eq } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
 import { revalidatePath } from 'next/cache'
 import { db } from '@/db'
@@ -65,5 +65,23 @@ export async function updateSlide(
   }
 
   await db.update(slide).set(data).where(eq(slide.id, id))
+  revalidatePath('/slide')
+}
+
+export async function publishSlide(id: string, published: boolean) {
+  const session = await getSession()
+  if (!session?.user) {
+    throw new Error('Unauthorized')
+  }
+
+  // 验证 slide 所有权
+  const existing = await db.query.slide.findFirst({
+    where: and(eq(slide.id, id), eq(slide.userId, session.user.id)),
+  })
+  if (!existing) {
+    throw new Error('Slide not found')
+  }
+
+  await db.update(slide).set({ published }).where(eq(slide.id, id))
   revalidatePath('/slide')
 }

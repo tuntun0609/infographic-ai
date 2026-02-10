@@ -6,6 +6,7 @@ export interface SlideData {
   id: string
   title: string
   infographics: Infographic[]
+  published?: boolean
   createdAt?: Date
   updatedAt?: Date
 }

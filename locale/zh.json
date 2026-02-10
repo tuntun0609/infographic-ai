@@ -102,7 +102,14 @@
       "title": "开始你的创作",
       "description": "创建一个新的演示文稿，开始你的精彩演讲。",
       "createPresentation": "新建演示"
-    }
+    },
+    "publish": "发布",
+    "unpublish": "取消发布",
+    "published": "已发布",
+    "publishSuccess": "发布成功",
+    "unpublishSuccess": "已取消发布",
+    "copyLink": "复制链接",
+    "linkCopied": "链接已复制"
   },
   "slideViewer": {
     "previous": "上一个",
@@ -246,6 +253,12 @@
     "description": "Explore more features coming soon.",
     "comingSoon": "Coming Soon",
     "workingOnSomething": "We're working on something exciting. Stay tuned!"
+  },
+  "preview": {
+    "title": "预览",
+    "slideNotFound": "幻灯片未找到或未发布",
+    "page": "页",
+    "createdBy": "由 InfographicAI 创建"
   },
   "aiPrinciples": {
     "howAIWorks": "How AI Works",

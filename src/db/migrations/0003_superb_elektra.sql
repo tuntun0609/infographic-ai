@@ -1,0 +1,1 @@
+ALTER TABLE "slide" ADD COLUMN "published" boolean DEFAULT false NOT NULL;

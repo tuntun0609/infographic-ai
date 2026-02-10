@@ -91,6 +91,7 @@ export default async function SlideIdPage({
           id: slideData.id,
           title: slideData.title,
           infographics: slideData.infographics,
+          published: slideData.published,
           createdAt: slideData.createdAt,
           updatedAt: slideData.updatedAt,
         }}

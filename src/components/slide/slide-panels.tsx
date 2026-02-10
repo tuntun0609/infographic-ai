@@ -78,6 +78,15 @@ export function SlidePanels({
     })
   }, [slide, slideId, t])
 
+  const handlePublishChange = useCallback(
+    (published: boolean) => {
+      if (slide) {
+        setSlide({ ...slide, published })
+      }
+    },
+    [slide, setSlide]
+  )
+
   // 初始化 slide 数据 - 只在 slideId 或 initialSlideData 变化时运行
   useEffect(() => {
     if (!initialSlideData) {
@@ -122,6 +131,7 @@ export function SlidePanels({
       <MobileSlidePanels
         isEditingTitle={isEditingTitle}
         isPending={isPending}
+        onPublishChange={handlePublishChange}
         onSave={handleSave}
         onTitleChange={setTitleValue}
         onTitleEdit={setIsEditingTitle}
@@ -139,6 +149,7 @@ export function SlidePanels({
       defaultLayout={defaultLayout}
       isEditingTitle={isEditingTitle}
       isPending={isPending}
+      onPublishChange={handlePublishChange}
       onSave={handleSave}
       onTabChange={handleTabChange}
       onTitleChange={setTitleValue}

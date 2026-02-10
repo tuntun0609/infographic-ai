@@ -24,6 +24,7 @@ interface DesktopSlidePanelsProps {
   onTitleSubmit: () => void
   onSave: () => void
   onTabChange: (tab: 'editor' | 'ai') => void
+  onPublishChange?: (published: boolean) => void
 }
 
 export function DesktopSlidePanels({
@@ -39,6 +40,7 @@ export function DesktopSlidePanels({
   onTitleSubmit,
   onSave,
   onTabChange,
+  onPublishChange,
 }: DesktopSlidePanelsProps) {
   const panelRef = useRef<PanelImperativeHandle>(null)
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -74,6 +76,7 @@ export function DesktopSlidePanels({
         isCollapsed={isCollapsed}
         isEditingTitle={isEditingTitle}
         isPending={isPending}
+        onPublishChange={onPublishChange}
         onSave={onSave}
         onTitleChange={onTitleChange}
         onTitleEdit={onTitleEdit}
