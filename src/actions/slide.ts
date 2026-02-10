@@ -51,7 +51,17 @@ export async function deleteSlide(id: string) {
     throw new Error('Unauthorized')
   }
 
-  await db.delete(slide).where(eq(slide.id, id))
+  // 验证 slide 所有权
+  const existing = await db.query.slide.findFirst({
+    where: and(eq(slide.id, id), eq(slide.userId, session.user.id)),
+  })
+  if (!existing) {
+    throw new Error('Slide not found')
+  }
+
+  await db
+    .delete(slide)
+    .where(and(eq(slide.id, id), eq(slide.userId, session.user.id)))
   revalidatePath('/slide')
 }
 
@@ -64,7 +74,18 @@ export async function updateSlide(
     throw new Error('Unauthorized')
   }
 
-  await db.update(slide).set(data).where(eq(slide.id, id))
+  // 验证 slide 所有权
+  const existing = await db.query.slide.findFirst({
+    where: and(eq(slide.id, id), eq(slide.userId, session.user.id)),
+  })
+  if (!existing) {
+    throw new Error('Slide not found')
+  }
+
+  await db
+    .update(slide)
+    .set(data)
+    .where(and(eq(slide.id, id), eq(slide.userId, session.user.id)))
   revalidatePath('/slide')
 }
 

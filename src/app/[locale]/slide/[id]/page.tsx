@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm'
+import { and, eq } from 'drizzle-orm'
 import type { Metadata } from 'next'
 import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
@@ -16,8 +16,14 @@ import 'jotai-devtools/styles.css'
 
 // 使用 cache 避免在 generateMetadata 和页面组件中重复查询
 const getSlideData = cache(async (id: string) => {
+  const session = await getSession()
+  if (!session?.user) {
+    return null
+  }
+
+  // 只返回属于当前用户的 slide
   return await db.query.slide.findFirst({
-    where: eq(slide.id, id),
+    where: and(eq(slide.id, id), eq(slide.userId, session.user.id)),
   })
 })
 
@@ -67,10 +73,11 @@ export default async function SlideIdPage({
   const { id } = await params
 
   // 从数据库加载 slide 数据（使用缓存的函数避免重复查询）
+  // getSlideData 已经包含了鉴权和权限检查
   const slideData = await getSlideData(id)
 
-  // 如果 slide 不存在或不属于当前用户，返回 404
-  if (!slideData || slideData.userId !== session.user.id) {
+  // 如果 slide 不存在或用户无权限访问，返回 404
+  if (!slideData) {
     notFound()
   }
 
