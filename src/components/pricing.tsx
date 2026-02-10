@@ -1,8 +1,8 @@
 'use client'
 import { Check } from 'lucide-react'
-import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
+import { Link } from '@/i18n/navigation'
 
 export default function Pricing() {
   const t = useTranslations('pricing')
