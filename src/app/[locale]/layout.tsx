@@ -6,6 +6,7 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { Toaster } from '@/components/ui/sonner'
 import { routing } from '@/i18n/routing'
 import './globals.css'
+import { Clarity } from '@/components/clarity'
 import { ThemeProvider } from '@/components/theme-provider'
 
 const geistSans = Geist({
@@ -74,6 +75,7 @@ export default async function RootLayout({
           {process.env.NODE_ENV === 'development' && <Agentation />}
           <Toaster richColors />
         </ThemeProvider>
+        <Clarity />
       </body>
     </html>
   )
