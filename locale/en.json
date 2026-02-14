@@ -112,12 +112,11 @@
     "linkCopied": "Link copied",
     "viewCard": "Card View",
     "viewList": "List View",
-    "sortBy": "Sort",
-    "sortUpdatedAt": "Last Modified",
-    "sortCreatedAt": "Created Time",
-    "sortTitleAsc": "Title A-Z",
-    "sortTitleDesc": "Title Z-A",
-    "pages": "pages"
+    "pages": "pages",
+    "sortUpdatedAt": "Last Updated",
+    "sortCreatedAt": "Date Created",
+    "sortTitleAsc": "Title (A-Z)",
+    "sortTitleDesc": "Title (Z-A)"
   },
   "slideViewer": {
     "previous": "Previous",
@@ -263,10 +262,18 @@
     }
   },
   "explore": {
-    "title": "Explore More",
-    "description": "Explore more features coming soon.",
-    "comingSoon": "Coming Soon",
-    "workingOnSomething": "We're working on something exciting. Stay tuned!"
+    "title": "Explore",
+    "description": "Discover public infographics created by the community.",
+    "search": "Search infographics...",
+    "pages": "pages",
+    "by": "by",
+    "anonymous": "Anonymous",
+    "viewCard": "Card View",
+    "viewList": "List View",
+    "emptyState": {
+      "title": "No Published Infographics",
+      "description": "There are no published infographics to explore yet. Check back later!"
+    }
   },
   "preview": {
     "title": "Preview",

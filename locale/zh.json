@@ -112,12 +112,11 @@
     "linkCopied": "链接已复制",
     "viewCard": "卡片视图",
     "viewList": "列表视图",
-    "sortBy": "排序",
-    "sortUpdatedAt": "最近修改",
+    "pages": "页",
+    "sortUpdatedAt": "最近更新",
     "sortCreatedAt": "创建时间",
-    "sortTitleAsc": "标题 A-Z",
-    "sortTitleDesc": "标题 Z-A",
-    "pages": "页"
+    "sortTitleAsc": "标题 (A-Z)",
+    "sortTitleDesc": "标题 (Z-A)"
   },
   "slideViewer": {
     "previous": "上一个",
@@ -263,10 +262,18 @@
     }
   },
   "explore": {
-    "title": "Explore More",
-    "description": "Explore more features coming soon.",
-    "comingSoon": "Coming Soon",
-    "workingOnSomething": "We're working on something exciting. Stay tuned!"
+    "title": "探索",
+    "description": "发现社区创作的公开信息图。",
+    "search": "搜索信息图...",
+    "pages": "页",
+    "by": "作者",
+    "anonymous": "匿名用户",
+    "viewCard": "卡片视图",
+    "viewList": "列表视图",
+    "emptyState": {
+      "title": "暂无公开信息图",
+      "description": "目前还没有已发布的信息图可供探索，请稍后再来！"
+    }
   },
   "preview": {
     "title": "预览",
