@@ -9,6 +9,26 @@ const SLIDE_H = 7.5
 // Regex for splitting viewBox values (whitespace and commas)
 const VIEW_BOX_SPLIT_REGEX = /[\s,]+/
 
+declare const scheduler: { yield: () => Promise<void> } | undefined
+
+/**
+ * 让出主线程，避免长任务阻塞 UI。
+ * 优先使用 scheduler.yield()（Chrome 129+），降级到 MessageChannel 微任务。
+ */
+function yieldToMain(): Promise<void> {
+  if (
+    typeof scheduler !== 'undefined' &&
+    typeof scheduler.yield === 'function'
+  ) {
+    return scheduler.yield()
+  }
+  return new Promise<void>((resolve) => {
+    const channel = new MessageChannel()
+    channel.port1.onmessage = () => resolve()
+    channel.port2.postMessage(undefined)
+  })
+}
+
 /**
  * 将信息图数组导出为 PPTX 文件
  */
@@ -24,6 +44,9 @@ export async function exportToPptx(
     if (!infographic.content || infographic.content.trim() === '') {
       continue
     }
+
+    // 每张图渲染前让出主线程，保持 UI 响应
+    await yieldToMain()
 
     // 高分辨率：最长边 2560px，DPR 3
     const result = await renderInfographicToPng(infographic.content, 2560, 3)
@@ -83,6 +106,9 @@ export async function exportToPdf(
     if (!infographic.content || infographic.content.trim() === '') {
       continue
     }
+
+    // 每张图渲染前让出主线程，保持 UI 响应
+    await yieldToMain()
 
     // 低分辨率：最长边 1748px，DPR 1，显著减小文件体积
     const result = await renderInfographicToPng(
@@ -159,7 +185,8 @@ async function renderInfographicToPng(
       theme: 'light',
     })
     probeInstance.render(content)
-    await new Promise((resolve) => setTimeout(resolve, 200))
+
+    await yieldToMain()
 
     const svg = probeContainer.querySelector('svg')
     if (svg) {
@@ -215,7 +242,7 @@ async function renderInfographicToPng(
       theme: 'light',
     })
     instance.render(content)
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    await yieldToMain()
 
     const dataUrl = await instance.toDataURL({ type: 'png', dpr })
     return { dataUrl, width: renderW, height: renderH }
