@@ -111,6 +111,19 @@ export const addInfographicAtom = atom(
   }
 )
 
+// 重新排序 infographics
+export const reorderInfographicsAtom = atom(
+  null,
+  (get, set, newOrder: string[]) => {
+    const slide = get(slideAtom)
+    if (!slide) return
+    const reordered = newOrder
+      .map((id) => slide.infographics.find((i) => i.id === id))
+      .filter((i): i is Infographic => !!i)
+    set(slideAtom, { ...slide, infographics: reordered })
+  }
+)
+
 // 删除 infographic
 export const deleteInfographicAtom = atom(
   null,

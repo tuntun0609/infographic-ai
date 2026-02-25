@@ -152,7 +152,9 @@
     "infographicDisplayArea": "Infographic Display Area",
     "selectInfographicToEdit": "Please select an infographic to edit",
     "renderError": "Render Error",
-    "unknownError": "Unknown error"
+    "unknownError": "Unknown error",
+    "thumbnailNav": "Thumbnail Navigation",
+    "dragToReorder": "Drag to reorder"
   },
   "slideEditor": {
     "preview": "Preview",

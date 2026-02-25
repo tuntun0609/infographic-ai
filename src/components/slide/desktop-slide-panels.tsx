@@ -1,14 +1,21 @@
 'use client'
 
+import { useAtomValue, useSetAtom } from 'jotai'
 import Cookies from 'js-cookie'
 import { useRef, useState } from 'react'
 import type { Layout, PanelImperativeHandle } from 'react-resizable-panels'
 import { Group, Panel, Separator } from 'react-resizable-panels'
 import { cn } from '@/lib/utils'
 import type { SlideData } from '@/store/slide-store'
+import {
+  reorderInfographicsAtom,
+  selectedInfographicIdAtom,
+  slideAtom,
+} from '@/store/slide-store'
 import { RESIZABLE_PANELS_COOKIE_NAME } from '@/type'
 import { EditorTabs } from './editor-tabs'
 import { InfographicViewer } from './infographic-viewer'
+import { ThumbnailStrip } from './infographic-viewer/thumbnail-strip'
 import { SlideTopBar } from './slide-top-bar'
 
 interface DesktopSlidePanelsProps {
@@ -44,6 +51,12 @@ export function DesktopSlidePanels({
 }: DesktopSlidePanelsProps) {
   const panelRef = useRef<PanelImperativeHandle>(null)
   const [isCollapsed, setIsCollapsed] = useState(false)
+  const currentSlide = useAtomValue(slideAtom)
+  const selectedInfographicId = useAtomValue(selectedInfographicIdAtom)
+  const setSelectedInfographicId = useSetAtom(selectedInfographicIdAtom)
+  const reorderInfographics = useSetAtom(reorderInfographicsAtom)
+
+  const showThumbnails = currentSlide && currentSlide.infographics.length >= 2
 
   const onLayoutChange = (layout: Layout) => {
     Cookies.set(RESIZABLE_PANELS_COOKIE_NAME, JSON.stringify(layout))
@@ -87,7 +100,19 @@ export function DesktopSlidePanels({
       />
 
       {/* Panel group */}
-      <div className="min-h-0 flex-1 p-3">
+      <div className="flex min-h-0 flex-1 gap-3 p-3">
+        {/* Thumbnail strip — independent from viewer */}
+        {showThumbnails && (
+          <div className="flex-shrink-0">
+            <ThumbnailStrip
+              infographics={currentSlide.infographics}
+              onReorder={reorderInfographics}
+              onSelect={setSelectedInfographicId}
+              selectedId={selectedInfographicId}
+            />
+          </div>
+        )}
+
         <Group
           className="h-full w-full"
           defaultLayout={

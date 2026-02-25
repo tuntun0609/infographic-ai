@@ -152,7 +152,9 @@
     "infographicDisplayArea": "信息图展示区域",
     "selectInfographicToEdit": "请选择一个信息图进行编辑",
     "renderError": "渲染错误",
-    "unknownError": "未知错误"
+    "unknownError": "未知错误",
+    "thumbnailNav": "缩略图导航",
+    "dragToReorder": "拖拽排序"
   },
   "slideEditor": {
     "preview": "预览",
